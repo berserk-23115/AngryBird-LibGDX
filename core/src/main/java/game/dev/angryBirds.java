@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.sun.java.swing.ui.SplashScreen;
+import game.dev.level.easyLevel001;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 

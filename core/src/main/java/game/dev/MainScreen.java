@@ -1,66 +1,66 @@
 package game.dev;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MainScreen implements Screen {
     private angryBirds game;
     private Texture image;
     private OrthographicCamera gameCam;
-    private Viewport gamescreenport;
 
-    public MainScreen( angryBirds game){
+    public MainScreen(angryBirds game) {
         this.game = game;
-        image = new Texture("libgdx.png");
+        image = new Texture("libgdx.png"); // Ensure the path is correct for your image
         gameCam = new OrthographicCamera();
-        gamescreenport = new FitViewport(720,480,gameCam);
+        gameCam.setToOrtho(false, 960, 608); // Set a default resolution
     }
 
     @Override
     public void show() {
-
+        // Initialize resources here if needed
     }
 
     @Override
     public void render(float delta) {
-    game.batch.begin();
-    game.batch.setProjectionMatrix(gameCam.combined);
-    game.batch.draw(image, 0, 0);
-    game.batch.end();
+        // Set the background color (RGBA values)
+        Gdx.gl.glClearColor(0.1f, 0.2f, 0.4f, 1f); // Example: dark blue
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // Clear the screen
 
+        // Render the texture
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        game.batch.draw(image, 0, 0);
+        game.batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        gamescreenport.update(width,height);
-
+        // Update the camera viewport to handle resizing
+        gameCam.setToOrtho(false, width, height);
     }
 
     @Override
     public void pause() {
-
+        // Handle pause logic if necessary
     }
 
     @Override
     public void resume() {
-
+        // Handle resume logic if necessary
     }
 
     @Override
     public void hide() {
-
+        // Clean up resources when the screen is hidden
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        // Dispose of resources to avoid memory leaks
+        image.dispose();
     }
-
 }

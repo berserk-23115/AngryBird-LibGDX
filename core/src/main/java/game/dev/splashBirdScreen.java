@@ -3,17 +3,24 @@ package game.dev;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 
-public class splashBirdScreen extends InputAdapter implements Screen {
+public class splashBirdScreen implements Screen {
     private angryBirds game;
     private Texture bgImage;
+    private ShapeRenderer shapeRenderer;
+    private AssetManager assetManager;
+    private float progress;
 
     public splashBirdScreen( angryBirds game){
         this.game = game;
         bgImage = new Texture("SplashScreen/firstScreen.png");
+        shapeRenderer= new ShapeRenderer();
+        assetManager = new AssetManager();
     }
     @Override
     public void show() {
@@ -33,9 +40,10 @@ public class splashBirdScreen extends InputAdapter implements Screen {
 
         game.batch.begin();
         // Draw the splash image centered
-        game.batch.draw(bgImage,
-                Gdx.graphics.getWidth() / 2f - bgImage.getWidth() / 2f,
-                Gdx.graphics.getHeight() / 2f - bgImage.getHeight() / 2f);
+//        game.batch.draw(bgImage,
+//                Gdx.graphics.getWidth() / 2f - bgImage.getWidth() / 2f,
+//                Gdx.graphics.getHeight() / 2f - bgImage.getHeight() / 2f);
+        game.batch.draw(bgImage,0,0,960,608);
         game.batch.end();
 
     }
@@ -62,7 +70,7 @@ public class splashBirdScreen extends InputAdapter implements Screen {
 
     @Override
     public void dispose() {
-
+        bgImage.dispose();
     }
 
 }
