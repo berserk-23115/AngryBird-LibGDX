@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
+import game.dev.level.easyLevel001;
 
 public class splashBirdScreen implements Screen {
     private angryBirds game;
@@ -27,7 +28,7 @@ public class splashBirdScreen implements Screen {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                game.setScreen(new MainScreen(game));
+                game.setScreen(new easyLevel001(game));
             }
         }, 3);
 

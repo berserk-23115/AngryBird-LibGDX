@@ -6,92 +6,148 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MainScreen implements Screen {
-    private Music click, music;
     private angryBirds game;
-    private Texture exitButton, MusicOnButton,MusicOffButton, logo;
-    private Texture backgroundImg;
     private OrthographicCamera gameCam;
+    private Texture backgroundImg;
+    private Music click, music;
+    private Stage stage;
+    private Texture logo;
 
-    private Texture NewGameMenuButton,LoadGameMenuButton;
+    // Buttons
+    private Texture exitButton, musicOnButton, musicOffButton, newGameButton, loadGameButton;
 
     public MainScreen(angryBirds game) {
-
-
         this.game = game;
-        exitButton = new Texture("MainScreen/exitbtn.png");
+
+        // Load textures
         logo = new Texture("MainScreen/AngryBird.png");
-        MusicOnButton = new Texture("MainScreen/music_on.png");
-        MusicOffButton = new Texture("MainScreen/music_off.png");
         backgroundImg = new Texture("MainScreen/backdrop.jpeg");
+        exitButton = new Texture("MainScreen/exitbtn.png");
+        musicOnButton = new Texture("MainScreen/music_on.png");
+        musicOffButton = new Texture("MainScreen/music_off.png");
+        newGameButton = new Texture("MainScreen/menuB1.png");
+        loadGameButton = new Texture("MainScreen/menuB2.png");
 
-        NewGameMenuButton = new Texture("MainScreen/menuB1.png");
-        LoadGameMenuButton = new Texture("MainScreen/menuB2.png");
+        // Load music
         click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/game.wav"));
 
+        // Camera and viewport
         gameCam = new OrthographicCamera();
-        gameCam.setToOrtho(false, 960, 608); // Set a default resolution
+        gameCam.setToOrtho(false, 960, 608);
+
+        // Stage for UI
+        stage = new Stage(new FitViewport(960, 608, gameCam));
+        Gdx.input.setInputProcessor(stage); // Set input processor to handle button clicks
     }
 
     @Override
     public void show() {
+        // Create a skin and add button textures
         Skin skin = new Skin();
-        skin.add("NewGameMenuButton", new TextureRegion(NewGameMenuButton));
-        skin.add("LoadGameMenuButton", new TextureRegion(LoadGameMenuButton));
-        skin.add("exitbtn", new TextureRegion(exitButton));
-        skin.add("musicbtn",new TextureRegion(MusicOnButton));
-        skin.add("musoffbtn",new TextureRegion(MusicOffButton));
+        skin.add("newGame", new TextureRegion(newGameButton));
+        skin.add("loadGame", new TextureRegion(loadGameButton));
+        skin.add("exit", new TextureRegion(exitButton));
+        skin.add("Logo", new TextureRegion(logo));
 
+        // Create ImageButtons
+        ImageButton newGameBtn = new ImageButton(skin.getDrawable("newGame"));
+        ImageButton loadGameBtn = new ImageButton(skin.getDrawable("loadGame"));
+        ImageButton exitBtn = new ImageButton(skin.getDrawable("exit"));
+        ImageButton logoBtn    = new ImageButton(skin.getDrawable("Logo"));
 
-        }
+        // Set button positions
+        logoBtn.setPosition(275,500);
+
+        exitBtn.setSize(80,80);
+        loadGameBtn.setSize(300,300);
+        newGameBtn.setSize(300,300);
+        newGameBtn.setPosition(150, 150);
+        loadGameBtn.setPosition(500, 150);
+        exitBtn.setPosition(10, 10);
+
+        // Add click listeners to buttons
+        newGameBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play(); // Play click sound
+                System.out.println("New Game Button Clicked");
+            }
+        });
+
+        loadGameBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play(); // Play click sound
+                System.out.println("Load Game Button Clicked");
+            }
+        });
+
+        exitBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play(); // Play click sound
+                System.out.println("Exit Button Clicked");
+                Gdx.app.exit(); // Exit the application
+            }
+        });
+
+        // Add buttons to the stage
+        stage.addActor(newGameBtn);
+        stage.addActor(loadGameBtn);
+        stage.addActor(exitBtn);
+        stage.addActor(logoBtn);
+    }
 
     @Override
     public void render(float delta) {
-        // Set the background color (RGBA values)
-        Gdx.gl.glClearColor(0.1f, 0.2f, 0.4f, 1f); // Example: dark blue
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // Clear the screen
+        // Clear the screen
+        Gdx.gl.glClearColor(0.1f, 0.2f, 0.4f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Render the texture
+        // Draw the background
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         game.batch.draw(backgroundImg, 0, 0);
         game.batch.end();
+
+        // Render the stage (UI)
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        // Update the camera viewport to handle resizing
-        gameCam.setToOrtho(false, width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-        // Handle pause logic if necessary
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-        // Handle resume logic if necessary
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
-        // Clean up resources when the screen is hidden
         dispose();
     }
 
     @Override
     public void dispose() {
-        // Dispose of resources to avoid memory leaks
+        // Dispose resources
         backgroundImg.dispose();
+        stage.dispose();
+        click.dispose();
+        music.dispose();
     }
 }
-
-

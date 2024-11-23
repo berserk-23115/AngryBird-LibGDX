@@ -4,18 +4,41 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import game.dev.angryBirds;
 
+import java.util.ArrayList;
+
 public class easyLevel001 implements Screen {
-    private angryBirds game;
+    private final angryBirds game;
     private OrthographicCamera gameCam;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private TiledMap map;
-    private TmxMapLoader mapLoader;
+    private Viewport viewport;
+
+    private SpriteBatch batch;
+    private Sprite block;
+    private ArrayList<Body> blockBodies;
+    public static final float PPM = 100f;
+    private World world;
+    private Box2DDebugRenderer b2dr;
+
+    private Texture texture;
+    private Body smallDynamicBody;
+    float colWidth = Gdx.graphics.getWidth() / 12f; // Width of one column (float for precision)
+    float rowHeight = Gdx.graphics.getHeight() / 12f; // Height of one row
+
 
     // Map dimensions (in pixels)
     private int mapWidth;
@@ -24,25 +47,85 @@ public class easyLevel001 implements Screen {
     public easyLevel001(angryBirds game) {
         this.game = game;
 
-        // Initialize camera
+        // Initialize camera and viewport
         gameCam = new OrthographicCamera();
-        gameCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Dynamic viewport
+        viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
 
         // Load map and initialize renderer
-        mapLoader = new TmxMapLoader();
+        TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load("TileMaps/level-updated.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 
         // Get map dimensions in pixels
         mapWidth = map.getProperties().get("width", Integer.class) * map.getProperties().get("tilewidth", Integer.class);
         mapHeight = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
 
-        // Set camera position to the center of the map
-        gameCam.position.set(mapWidth / 2f, mapHeight / 2f, 0);
+        // Initialize Box2D world and debug renderer
+        world = new World(new Vector2(0, -9.81f), true);
+        b2dr = new Box2DDebugRenderer();
+
+        // Initialize sprite batch and block bodies
+        batch = new SpriteBatch();
+        block = new Sprite(new Texture("TileMaps/BLOCK_WOOD_4X4_2.png"));
+        block.setSize(32 / PPM, 32 / PPM);
+        blockBodies = new ArrayList<>();
+
+        // Load additional texture
+        texture = new Texture("TileMaps/red.png");
+
+        // Create Box2D bodies from map objects
+        for (RectangleMapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = object.getRectangle();
+
+            // Define the body as a static body
+            BodyDef bdef = new BodyDef();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
+
+            // Create the body in the Box2D world
+            Body body = world.createBody(bdef);
+
+            // Define the shape of the body as a rectangle
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
+
+            FixtureDef fdef = new FixtureDef();
+            fdef.shape = shape;
+            fdef.density = 1f;
+            fdef.friction = 0.4f;
+            fdef.restitution = 0f;
+
+            body.createFixture(fdef);
+            blockBodies.add(body);
+
+            shape.dispose();
+        }
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(160f / PPM, 370f / PPM); // Set initial position
+        smallDynamicBody = world.createBody(bodyDef);
+
+        // Define the shape and fixture
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox((colWidth * 3 / PPM), (rowHeight * 0.9f / PPM)); // Half-width and half-height
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f; // Mass = density * volume
+        fixtureDef.friction = 0.5f;
+        fixtureDef.restitution = 0.3f; // Bounciness
+
+        smallDynamicBody.createFixture(fixtureDef);
+        shape.dispose();
+
+        // Center the camera
+        gameCam.position.set(mapWidth / 2f / PPM, mapHeight / 2f / PPM, 0);
         gameCam.update();
     }
 
     public void update(float delta) {
+        // Update the Box2D world
+        world.step(delta, 6, 2);
+
         // Update the camera
         gameCam.update();
         tiledMapRenderer.setView(gameCam);
@@ -50,50 +133,61 @@ public class easyLevel001 implements Screen {
 
     @Override
     public void show() {
-        // Initialize Box2D (physics engine)
-        Box2D.init();
+        // No additional initialization needed
     }
 
     @Override
     public void render(float delta) {
-        // Clear the screen
-        Gdx.gl.glClearColor(0, 0, 0, 1); // Black background
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-        // Update game logic
         update(delta);
+
+        // Clear the screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render the tiled map
         tiledMapRenderer.render();
+
+        // Render the Box2D debug renderer
+        b2dr.render(world, gameCam.combined);
+
+        // Render the sprites
+        batch.setProjectionMatrix(gameCam.combined);
+        batch.begin();
+        for (Body body : blockBodies) {
+            block.setPosition((body.getPosition().x * PPM) - block.getWidth() / 2,
+                (body.getPosition().y * PPM) - block.getHeight() / 2);
+            block.setRotation((float) Math.toDegrees(body.getAngle()));
+            block.draw(batch);
+        }
+
+        // Draw the AngryBird texture
+        float rowHeight = Gdx.graphics.getHeight() / 12f;
+        float colWidth = Gdx.graphics.getWidth() / 12f;
+        batch.draw(texture, 160f / PPM, 370f / PPM, colWidth * 6 / PPM, rowHeight * 1.8f / PPM);
+
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        // Adjust the viewport if the window size changes
-        gameCam.viewportWidth = width;
-        gameCam.viewportHeight = height;
-        gameCam.update();
+        viewport.update(width, height);
     }
 
     @Override
-    public void pause() {
-        // Handle game pause logic (if needed)
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-        // Handle game resume logic (if needed)
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-        // Clean up resources when this screen is hidden
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
-        // Dispose of resources to avoid memory leaks
-        if (map != null) map.dispose();
-        if (tiledMapRenderer != null) tiledMapRenderer.dispose();
+        map.dispose();
+        tiledMapRenderer.dispose();
+        batch.dispose();
+        world.dispose();
+        b2dr.dispose();
+        texture.dispose();
     }
 }
