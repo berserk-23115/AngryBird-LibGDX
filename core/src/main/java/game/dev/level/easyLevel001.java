@@ -14,13 +14,16 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import game.dev.angryBirds;
+import game.dev.catapult.catapult;
 
 import java.util.ArrayList;
 
 public class easyLevel001 implements Screen {
+
     private final angryBirds game;
     private OrthographicCamera gameCam;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -43,13 +46,15 @@ public class easyLevel001 implements Screen {
     // Map dimensions (in pixels)
     private int mapWidth;
     private int mapHeight;
-
+    private catapult slingshotGame;
     public easyLevel001(angryBirds game) {
         this.game = game;
+
 
         // Initialize camera and viewport
         gameCam = new OrthographicCamera();
         viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
+        slingshotGame = new catapult(viewport);
 
         // Load map and initialize renderer
         TmxMapLoader mapLoader = new TmxMapLoader();
@@ -71,7 +76,7 @@ public class easyLevel001 implements Screen {
         blockBodies = new ArrayList<>();
 
         // Load additional texture
-        texture = new Texture("TileMaps/red.png");
+
 
         // Create Box2D bodies from map objects
         for (RectangleMapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
@@ -96,26 +101,56 @@ public class easyLevel001 implements Screen {
             fdef.restitution = 0f;
 
             body.createFixture(fdef);
-            blockBodies.add(body);
+//            blockBodies.add(body);
 
             shape.dispose();
         }
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(160f / PPM, 370f / PPM); // Set initial position
-        smallDynamicBody = world.createBody(bodyDef);
+//        BodyDef bodyDef = new BodyDef();
+//        bodyDef.type = BodyDef.BodyType.DynamicBody;
+//        bodyDef.position.set(160f / PPM, 370f / PPM); // Set initial position
+//        smallDynamicBody = world.createBody(bodyDef);
 
         // Define the shape and fixture
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox((colWidth * 3 / PPM), (rowHeight * 0.9f / PPM)); // Half-width and half-height
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1f; // Mass = density * volume
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.3f; // Bounciness
+//        PolygonShape shape = new PolygonShape();
+//        shape.setAsBox((colWidth * 3 / PPM), (rowHeight * 0.9f / PPM)); // Half-width and half-height
+//        FixtureDef fixtureDef = new FixtureDef();
+//        fixtureDef.shape = shape;
+//        fixtureDef.density = 1f; // Mass = density * volume
+//        fixtureDef.friction = 0.5f;
+//        fixtureDef.restitution = 0.3f; // Bounciness
+//
+//        smallDynamicBody.createFixture(fixtureDef);
+//        shape.dispose();
 
-        smallDynamicBody.createFixture(fixtureDef);
-        shape.dispose();
+
+        // Load the texture for the wood block
+//        Texture woodBlockTexture = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
+//        Sprite woodBlockSprite = new Sprite(woodBlockTexture);
+//        woodBlockSprite.setSize(32 / PPM, 32 / PPM); // Adjust size based on PPM
+
+// Define the body as a static or dynamic body
+//        BodyDef woodBlockBodyDef = new BodyDef();
+//        woodBlockBodyDef.type = BodyDef.BodyType.DynamicBody ; // Change to DynamicBody if needed
+//        woodBlockBodyDef.position.set(200f / PPM, 200f / PPM); // Set position in the world
+//
+//        Body woodBlockBody = world.createBody(woodBlockBodyDef);
+
+// Define the shape of the body as a rectangle
+//        PolygonShape woodBlockShape = new PolygonShape();
+//        woodBlockShape.setAsBox(16 / PPM, 16 / PPM); // Half-width and half-height in meters
+//
+//        FixtureDef woodBlockFixtureDef = new FixtureDef();
+//        woodBlockFixtureDef.shape = woodBlockShape;
+//        woodBlockFixtureDef.density = 1f;
+//        woodBlockFixtureDef.friction = 0.5f;
+//        woodBlockFixtureDef.restitution = 0.3f;
+//
+//        woodBlockBody.createFixture(woodBlockFixtureDef);
+//        woodBlockShape.dispose();
+//
+//// Add the body to the list for rendering
+//        blockBodies.add(woodBlockBody);
+
 
         // Center the camera
         gameCam.position.set(mapWidth / 2f / PPM, mapHeight / 2f / PPM, 0);
@@ -145,26 +180,29 @@ public class easyLevel001 implements Screen {
 
         // Render the tiled map
         tiledMapRenderer.render();
+        slingshotGame.render(delta);
 
         // Render the Box2D debug renderer
         b2dr.render(world, gameCam.combined);
 
+
         // Render the sprites
         batch.setProjectionMatrix(gameCam.combined);
         batch.begin();
-        for (Body body : blockBodies) {
-            block.setPosition((body.getPosition().x * PPM) - block.getWidth() / 2,
-                (body.getPosition().y * PPM) - block.getHeight() / 2);
-            block.setRotation((float) Math.toDegrees(body.getAngle()));
-            block.draw(batch);
-        }
+//        for (Body body : blockBodies) {
+//            block.setPosition((body.getPosition().x * PPM) - block.getWidth() / 2,
+//                (body.getPosition().y * PPM) - block.getHeight() / 2);
+//            block.setRotation((float) Math.toDegrees(body.getAngle()));
+//            block.draw(batch);
+//        }
 
         // Draw the AngryBird texture
         float rowHeight = Gdx.graphics.getHeight() / 12f;
         float colWidth = Gdx.graphics.getWidth() / 12f;
-        batch.draw(texture, 160f / PPM, 370f / PPM, colWidth * 6 / PPM, rowHeight * 1.8f / PPM);
+//        batch.draw(texture, 160f / PPM, 370f / PPM, colWidth * 6 / PPM, rowHeight * 1.8f / PPM);
 
         batch.end();
+//        b2dr.render(world, stage.getCamera().combined);
     }
 
     @Override
