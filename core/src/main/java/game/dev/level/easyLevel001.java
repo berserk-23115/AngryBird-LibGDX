@@ -109,7 +109,7 @@ public class easyLevel001 implements Screen {
         for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = object.getRectangle();
             BodyDef bdef = new BodyDef();
-            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.type = BodyDef.BodyType.DynamicBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
 
             Body body = world.createBody(bdef);

@@ -1,6 +1,5 @@
 package game.dev.catapult;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,6 +27,7 @@ public class catapult {
     private Vector2 dragStart;
     private float timeElapsed;
     private Stage stage;
+    private Box2DDebugRenderer debugRenderer; // Debug renderer
     public static final float PPM = 100f;
     Body projectileBody;
 
@@ -63,20 +63,17 @@ public class catapult {
             float t = 0f;
 
             for (int i = 0; i < trajectoryPointCount; i++) {
-                // Scale trajectory positions by PPM
                 float x = (projectileEquation.getX(t) + getX()) / PPM;
                 float y = (projectileEquation.getY(t) + getY()) / PPM + 40 / PPM;
 
                 if (y < 0) break; // Stop rendering if trajectory goes below ground level
 
-                // Draw trajectory points
                 batch.setColor(getColor());
                 batch.draw(trajectoryTextureRegion, x, y, 10 / PPM, 10 / PPM);
 
                 t += timeSeparation;
             }
         }
-
 
         @Override
         public Actor hit(float x, float y, boolean touchable) {
@@ -86,42 +83,38 @@ public class catapult {
 
     public catapult(Viewport viewport) {
         world = new World(new Vector2(0, -9.8f), true);
-        // Initialize batch and camera
-        this.projectileEquation = new ProjectileEquation();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
+        debugRenderer = new Box2DDebugRenderer(); // Initialize debug renderer
 
         // Load textures
         slingshotTexture = new Texture("TileMaps/catapult.png");
         projectileTexture = new Texture("TileMaps/blue.png");
         trajectoryPointTexture = new Texture("libgdx.png");
+
         slingshotPosition = new Vector2(60, 80);
         projectilePosition = new Vector2(slingshotPosition);
-// Define the projectile body
+
+        // Define the projectile body
         BodyDef projectileBodyDef = new BodyDef();
-        projectileBodyDef.type = BodyDef.BodyType.KinematicBody; // Kinematic initially
+        projectileBodyDef.type = BodyDef.BodyType.StaticBody; // Kinematic initially
         projectileBodyDef.position.set(slingshotPosition.x / PPM, slingshotPosition.y / PPM);
 
         projectileBody = world.createBody(projectileBodyDef);
 
-
-        projectileBody = world.createBody(projectileBodyDef);
-
-// Define the projectile shape
+        // Define the projectile shape
         CircleShape projectileShape = new CircleShape();
         projectileShape.setRadius(10 / PPM); // Set radius based on texture size
 
         FixtureDef projectileFixtureDef = new FixtureDef();
         projectileFixtureDef.shape = projectileShape;
-        projectileFixtureDef.density = 1f; // Mass = density × volume
+        projectileFixtureDef.density = 1f;
         projectileFixtureDef.friction = 0.5f;
         projectileFixtureDef.restitution = 0.3f; // Bounciness
 
         projectileBody.createFixture(projectileFixtureDef);
         projectileShape.dispose();
-        // Initialize slingshot and projectile positions
-
 
         // Initialize controller
         controller = new Controller();
@@ -155,19 +148,15 @@ public class catapult {
                     Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                     float maxDragDistance = 50f; // Maximum dragging distance
 
-                    // Calculate the distance and limit it
                     float distance = dragStart.dst(dragEnd);
                     if (distance > maxDragDistance) {
                         dragEnd = dragStart.cpy().lerp(dragEnd, maxDragDistance / distance);
                     }
 
-
-                    // Calculate power and angle based on drag
                     controller.power = dragStart.dst(dragEnd) * 3; // Scale power
                     controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
 
-                    // Update projectile position
-                    projectilePosition.set(dragEnd.x + 200, dragEnd.y + 200);
+                    projectilePosition.set(dragEnd.x, dragEnd.y);
                 }
                 return true;
             }
@@ -176,59 +165,35 @@ public class catapult {
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 isDragging = false;
 
-                // Set projectile equation parameters
                 projectileEquation.startVelocity.set(controller.power, 0f);
                 projectileEquation.startVelocity.setAngleDeg(controller.angle);
 
-                // Apply launch velocity to the projectileBody
                 Vector2 launchVelocity = new Vector2(controller.power, 0f);
                 launchVelocity.setAngleDeg(controller.angle);
 
-                // Switch to dynamic body
                 projectileBody.setType(BodyDef.BodyType.DynamicBody);
-                projectileBody.setLinearVelocity(launchVelocity.scl(1 / PPM)); // Scale velocity by PPM
+                projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
 
                 return true;
             }
-
         });
     }
 
     public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-        // Update the Box2D world
         world.step(delta, 6, 2);
 
-        // Update projectile position from Box2D body
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
-
-        stage.act(delta);
-        stage.draw();
 
         batch.begin();
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectileTexture, projectilePosition.x - 10, projectilePosition.y - 10, 20, 20);
         batch.end();
-        batch.begin();
-        batch.draw(slingshotTexture, slingshotPosition.x , slingshotPosition.y , 40, 100);
 
-        if (timeElapsed >= 0) {
-            timeElapsed += delta;
-            float x = projectileEquation.getX(timeElapsed);
-            float y = projectileEquation.getY(timeElapsed);
+        debugRenderer.render(world, camera.combined.cpy().scl(PPM));
 
-            if (y <= 0) {
-                timeElapsed = -1;
-                projectilePosition.set(slingshotPosition);
-            } else {
-                projectilePosition.set(x, y);
-            }
-        }
-
-        batch.draw(projectileTexture, projectilePosition.x - 10, projectilePosition.y + 40, 20, 20);
-        batch.end();
+        stage.act(delta);
+        stage.draw();
     }
 
     public void dispose() {
@@ -237,5 +202,7 @@ public class catapult {
         projectileTexture.dispose();
         trajectoryPointTexture.dispose();
         stage.dispose();
+        world.dispose();
+        debugRenderer.dispose(); // Dispose debug renderer
     }
 }
