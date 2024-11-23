@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="10">
  <tileset firstgid="1" source="background.tsx"/>
  <tileset firstgid="1345" source="background2.tsx"/>
  <layer id="1" name="Background" width="30" height="19">
@@ -27,5 +27,15 @@
  </layer>
  <objectgroup id="2" name="Ground">
   <object id="1" x="0" y="512.402" width="961.348" height="95.183"/>
+ </objectgroup>
+ <objectgroup id="4" name="Blocks">
+  <object id="2" x="736.914" y="449.642" width="62.4503" height="62.4503"/>
+  <object id="3" x="802.771" y="453.049" width="59.0439" height="60.1794"/>
+  <object id="4" x="866.356" y="448.507" width="61.3149" height="65.8567"/>
+  <object id="5" x="800.5" y="320.2" width="64.7212" height="64.7212"/>
+  <object id="6" x="735.778" y="256.614" width="65.8567" height="63.5858"/>
+  <object id="7" x="864.085" y="255.479" width="65.8567" height="64.7212"/>
+  <object id="8" x="735.778" y="383.786" width="63.5858" height="62.4503"/>
+  <object id="9" x="865.221" y="386.057" width="63.5858" height="61.3149"/>
  </objectgroup>
 </map>

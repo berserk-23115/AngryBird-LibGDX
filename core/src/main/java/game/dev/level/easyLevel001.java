@@ -23,7 +23,7 @@ import game.dev.catapult.catapult;
 import java.util.ArrayList;
 
 public class easyLevel001 implements Screen {
-
+    private Texture WOOD_BLOCK_TEXTURE;
     private final angryBirds game;
     private OrthographicCamera gameCam;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -55,7 +55,7 @@ public class easyLevel001 implements Screen {
         gameCam = new OrthographicCamera();
         viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
         slingshotGame = new catapult(viewport);
-
+        WOOD_BLOCK_TEXTURE = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
         // Load map and initialize renderer
         TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load("TileMaps/level-updated.tmx");
@@ -104,6 +104,28 @@ public class easyLevel001 implements Screen {
 //            blockBodies.add(body);
 
             shape.dispose();
+        }
+
+        for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = object.getRectangle();
+            BodyDef bdef = new BodyDef();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
+
+            Body body = world.createBody(bdef);
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
+
+            FixtureDef fdef = new FixtureDef();
+            fdef.shape = shape;
+            fdef.density = 1f;
+            fdef.friction = 0.4f;
+            fdef.restitution = 0f;
+
+            body.createFixture(fdef);
+            blockBodies.add(body);
+            shape.dispose();
+
         }
 //        BodyDef bodyDef = new BodyDef();
 //        bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -189,12 +211,13 @@ public class easyLevel001 implements Screen {
         // Render the sprites
         batch.setProjectionMatrix(gameCam.combined);
         batch.begin();
-//        for (Body body : blockBodies) {
+        for (Body body : blockBodies) {
 //            block.setPosition((body.getPosition().x * PPM) - block.getWidth() / 2,
 //                (body.getPosition().y * PPM) - block.getHeight() / 2);
 //            block.setRotation((float) Math.toDegrees(body.getAngle()));
 //            block.draw(batch);
-//        }
+            batch.draw(WOOD_BLOCK_TEXTURE, body.getPosition().x - 16 / PPM, body.getPosition().y - 16 / PPM, 32 / PPM, 32 / PPM);
+        }
 
         // Draw the AngryBird texture
         float rowHeight = Gdx.graphics.getHeight() / 12f;
