@@ -50,11 +50,11 @@ public class easyLevel001 implements Screen {
     public easyLevel001(angryBirds game) {
         this.game = game;
 
+        world = new World(new Vector2(0, -9.81f), true);
 
         // Initialize camera and viewport
         gameCam = new OrthographicCamera();
         viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
-        slingshotGame = new catapult(viewport);
         WOOD_BLOCK_TEXTURE = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
         // Load map and initialize renderer
         TmxMapLoader mapLoader = new TmxMapLoader();
@@ -66,7 +66,6 @@ public class easyLevel001 implements Screen {
         mapHeight = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
 
         // Initialize Box2D world and debug renderer
-        world = new World(new Vector2(0, -9.81f), true);
         b2dr = new Box2DDebugRenderer();
 
         // Initialize sprite batch and block bodies
@@ -97,8 +96,8 @@ public class easyLevel001 implements Screen {
             FixtureDef fdef = new FixtureDef();
             fdef.shape = shape;
             fdef.density = 1f;
-            fdef.friction = 0.4f;
-            fdef.restitution = 0f;
+            fdef.friction = 10.0f;
+            fdef.restitution = 0.2f;
 
             body.createFixture(fdef);
 //            blockBodies.add(body);
@@ -118,18 +117,21 @@ public class easyLevel001 implements Screen {
 
             FixtureDef fdef = new FixtureDef();
             fdef.shape = shape;
-            fdef.density = 1f;
+            fdef.density = 0.5f;
             fdef.friction = 0.4f;
-            fdef.restitution = 0f;
-            fdef.filter.categoryBits=1;
-            fdef.filter.maskBits=1;
-            fdef.filter.groupIndex=1;
+            fdef.restitution = 0.2f;
+//            fdef.filter.categoryBits=1;
+//            fdef.filter.maskBits=1;
+//            fdef.filter.groupIndex=1;
 
             body.createFixture(fdef);
             blockBodies.add(body);
             shape.dispose();
 
         }
+
+        slingshotGame = new catapult(viewport , world);
+
 //        BodyDef bodyDef = new BodyDef();
 //        bodyDef.type = BodyDef.BodyType.DynamicBody;
 //        bodyDef.position.set(160f / PPM, 370f / PPM); // Set initial position

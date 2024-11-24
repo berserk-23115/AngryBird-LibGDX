@@ -81,8 +81,8 @@ public class catapult {
         }
     }
 
-    public catapult(Viewport viewport) {
-        world = new World(new Vector2(0, -9.8f), true);
+    public catapult(Viewport viewport, World duniya) {
+        world = duniya;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
@@ -94,7 +94,7 @@ public class catapult {
         trajectoryPointTexture = new Texture("libgdx.png");
 
         slingshotPosition = new Vector2(60, 80);
-        projectilePosition = new Vector2(slingshotPosition);
+        projectilePosition = new Vector2(60,400);
 
         // Initialize projectileEquation
         projectileEquation = new ProjectileEquation();
@@ -102,8 +102,9 @@ public class catapult {
 
         // Define the projectile body
         BodyDef projectileBodyDef = new BodyDef();
-        projectileBodyDef.type = BodyDef.BodyType.StaticBody; // Kinematic initially
+        projectileBodyDef.type = BodyDef.BodyType.DynamicBody; // Set directly to Dynamic
         projectileBodyDef.position.set(slingshotPosition.x / PPM, slingshotPosition.y / PPM);
+        projectileBodyDef.active = false; // Start inactive
 
         projectileBody = world.createBody(projectileBodyDef);
 
@@ -114,11 +115,11 @@ public class catapult {
         FixtureDef projectileFixtureDef = new FixtureDef();
         projectileFixtureDef.shape = projectileShape;
         projectileFixtureDef.density = 1f;
-        projectileFixtureDef.friction = 0.5f;
+        projectileFixtureDef.friction = 0f;
         projectileFixtureDef.restitution = 0.3f;// Bounciness
-        projectileFixtureDef.filter.categoryBits=2;
-        projectileFixtureDef.filter.maskBits=1;
-        projectileFixtureDef.filter.groupIndex=0;
+//        projectileFixtureDef.filter.categoryBits=2;
+//        projectileFixtureDef.filter.maskBits=1;
+//        projectileFixtureDef.filter.groupIndex=0;
 
         projectileBody.createFixture(projectileFixtureDef);
         projectileShape.dispose();
@@ -168,7 +169,6 @@ public class catapult {
                 return true;
             }
 
-            @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 isDragging = false;
 
@@ -178,7 +178,9 @@ public class catapult {
                 Vector2 launchVelocity = new Vector2(controller.power, 0f);
                 launchVelocity.setAngleDeg(controller.angle);
 
-                projectileBody.setType(BodyDef.BodyType.DynamicBody);
+                projectileBody.setTransform(slingshotPosition.x / PPM, slingshotPosition.y / PPM, 0); // Reset position
+                projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
+                projectileBody.setActive(true); // Activate
                 projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
 
                 return true;
@@ -201,6 +203,17 @@ public class catapult {
 
         stage.act(delta);
         stage.draw();
+        if (projectilePosition.y < 0) {
+            resetProjectile(); // Call to reset
+        }
+
+    }
+
+    private void resetProjectile() {
+        projectileBody.setType(BodyDef.BodyType.StaticBody); // Set back to Static
+        projectileBody.setTransform(slingshotPosition.x / PPM, slingshotPosition.y / PPM, 0);
+        projectileBody.setLinearVelocity(0, 0); // Clear velocity
+        projectileBody.setActive(false);
     }
 
     public void dispose() {
