@@ -96,6 +96,10 @@ public class catapult {
         slingshotPosition = new Vector2(60, 80);
         projectilePosition = new Vector2(slingshotPosition);
 
+        // Initialize projectileEquation
+        projectileEquation = new ProjectileEquation();
+        projectileEquation.gravity = -9.8f;
+
         // Define the projectile body
         BodyDef projectileBodyDef = new BodyDef();
         projectileBodyDef.type = BodyDef.BodyType.StaticBody; // Kinematic initially
@@ -111,7 +115,10 @@ public class catapult {
         projectileFixtureDef.shape = projectileShape;
         projectileFixtureDef.density = 1f;
         projectileFixtureDef.friction = 0.5f;
-        projectileFixtureDef.restitution = 0.3f; // Bounciness
+        projectileFixtureDef.restitution = 0.3f;// Bounciness
+        projectileFixtureDef.filter.categoryBits=2;
+        projectileFixtureDef.filter.maskBits=1;
+        projectileFixtureDef.filter.groupIndex=0;
 
         projectileBody.createFixture(projectileFixtureDef);
         projectileShape.dispose();
@@ -180,7 +187,7 @@ public class catapult {
     }
 
     public void render(float delta) {
-        world.step(delta, 6, 2);
+        world.step(1/60f, 6, 2);
 
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);

@@ -121,6 +121,9 @@ public class easyLevel001 implements Screen {
             fdef.density = 1f;
             fdef.friction = 0.4f;
             fdef.restitution = 0f;
+            fdef.filter.categoryBits=1;
+            fdef.filter.maskBits=1;
+            fdef.filter.groupIndex=1;
 
             body.createFixture(fdef);
             blockBodies.add(body);
@@ -181,7 +184,7 @@ public class easyLevel001 implements Screen {
 
     public void update(float delta) {
         // Update the Box2D world
-        world.step(delta, 6, 2);
+        world.step(1/60f, 6, 2);
 
         // Update the camera
         gameCam.update();
