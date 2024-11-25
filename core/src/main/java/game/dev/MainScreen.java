@@ -59,22 +59,31 @@ public class MainScreen implements Screen {
         skin.add("loadGame", new TextureRegion(loadGameButton));
         skin.add("exit", new TextureRegion(exitButton));
         skin.add("Logo", new TextureRegion(logo));
+        skin.add("musicOn", new TextureRegion(musicOnButton));
 
         // Create ImageButtons
         ImageButton newGameBtn = new ImageButton(skin.getDrawable("newGame"));
         ImageButton loadGameBtn = new ImageButton(skin.getDrawable("loadGame"));
         ImageButton exitBtn = new ImageButton(skin.getDrawable("exit"));
         ImageButton logoBtn    = new ImageButton(skin.getDrawable("Logo"));
+        ImageButton musicOnBtn = new ImageButton(skin.getDrawable("musicOn"));
 
         // Set button positions
         logoBtn.setPosition(275,500);
 
+
         exitBtn.setSize(80,80);
         loadGameBtn.setSize(300,300);
         newGameBtn.setSize(300,300);
+        musicOnBtn.setSize(70,70);
+
+
+
+
         newGameBtn.setPosition(150, 150);
         loadGameBtn.setPosition(500, 150);
         exitBtn.setPosition(10, 10);
+        musicOnBtn.setPosition(880,10);
 
         // Add click listeners to buttons
         newGameBtn.addListener(new ClickListener() {
@@ -107,6 +116,7 @@ public class MainScreen implements Screen {
         stage.addActor(loadGameBtn);
         stage.addActor(exitBtn);
         stage.addActor(logoBtn);
+        stage.addActor(musicOnBtn);
     }
 
     @Override

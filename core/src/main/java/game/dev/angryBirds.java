@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.sun.java.swing.ui.SplashScreen;
 import game.dev.level.easyLevel001;
+import jdk.tools.jmod.Main;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 
@@ -22,7 +23,7 @@ public class angryBirds extends Game {
     public void create() {
         batch = new SpriteBatch();
 
-        setScreen(new splashBirdScreen(this));
+        setScreen(new LevelSelector(this));
     }
 
     @Override
