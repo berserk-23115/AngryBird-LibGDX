@@ -3,12 +3,15 @@ package game.dev;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import game.dev.level.easyLevel001;
 
@@ -22,6 +25,7 @@ public class LevelSelector implements Screen {
     private Stage stage;
     private OrthographicCamera gameCam;
     private Texture playbtn,GameTitle;
+    private Music click;
 
 
 
@@ -35,6 +39,7 @@ public class LevelSelector implements Screen {
         //Camera and ViewPort
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, 960, 608);
+        click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
 
         //Stage for UI
         stage = new Stage(new FitViewport(960, 608, gameCam));
@@ -140,6 +145,55 @@ public class LevelSelector implements Screen {
 
 
         //// Add click listeners to buttons
+        p1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                game.setScreen(new easyLevel001(game));
+            }
+        });
+
+        p2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                game.setScreen(new easyLevel001(game));
+            }
+        });
+
+        p3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                game.setScreen(new easyLevel001(game));
+            }
+        });
+
+
+
+        exitBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                Gdx.app.exit();
+            }
+        });
+
+        musicOn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                stage.addActor(musicOff);
+            }
+        });
+
+        back.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                game.setScreen(new MainScreen(game));
+            }
+        });
 
 
 
