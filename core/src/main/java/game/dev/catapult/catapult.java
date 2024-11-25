@@ -1,12 +1,14 @@
 package game.dev.catapult;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -107,6 +109,7 @@ public class catapult {
         projectileBodyDef.active = false; // Start inactive
 
         projectileBody = world.createBody(projectileBodyDef);
+        projectileBody.setUserData("Bird");
 
         // Define the projectile shape
         CircleShape projectileShape = new CircleShape();
@@ -140,17 +143,30 @@ public class catapult {
         dragStart = new Vector2();
         isDragging = false;
 
+        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
+//        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
+                                        // Bottom LEFT ......
+
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
-                isDragging = true;
-                return true;
+                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+                if(InputArea.contains(pos.x, pos.y)) {
+                    System.out.println("Touched Catapult");
+                    dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
+                    isDragging = true;
+                    return true;
+                }
+                return false;
             }
 
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
-                if (isDragging) {
+                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+                if(InputArea.contains(pos.x, pos.y)) {
+                    System.out.println("Dragging Catapult");
+                    if (isDragging) {
                     Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                     float maxDragDistance = 50f; // Maximum dragging distance
 
@@ -163,11 +179,14 @@ public class catapult {
                     controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
 
                     projectilePosition.set(dragEnd.x, dragEnd.y);
-                }
-                return true;
+                    }
+                    return true;}return false;
             }
 
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+                if(InputArea.contains(pos.x, pos.y)) {
+                    System.out.println("Input area touch released!");
                 isDragging = false;
 
                 projectileEquation.startVelocity.set(controller.power, 0f);
@@ -181,7 +200,8 @@ public class catapult {
                 projectileBody.setActive(true); // Activate
                 projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
 
-                return true;
+                return true;}
+                return false;
             }
         });
     }
