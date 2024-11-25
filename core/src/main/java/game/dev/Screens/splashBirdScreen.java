@@ -1,14 +1,13 @@
-package game.dev;
+package game.dev.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
-import game.dev.level.easyLevel001;
+import game.dev.angryBirds;
 
 public class splashBirdScreen implements Screen {
     private angryBirds game;

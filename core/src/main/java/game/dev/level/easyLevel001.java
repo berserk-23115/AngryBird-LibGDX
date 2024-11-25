@@ -23,7 +23,7 @@
 //import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 //import com.badlogic.gdx.utils.viewport.FitViewport;
 //import com.badlogic.gdx.utils.viewport.Viewport;
-//import game.dev.MainScreen;
+//import game.dev.Screens.MainScreen;
 //import game.dev.angryBirds;
 //import game.dev.catapult.catapult;
 //
@@ -261,7 +261,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import game.dev.MainScreen;
+import game.dev.Screens.MainScreen;
 import game.dev.angryBirds;
 import game.dev.catapult.catapult;
 
