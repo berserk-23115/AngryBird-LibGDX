@@ -28,7 +28,7 @@ public class splashBirdScreen implements Screen {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                game.setScreen(new easyLevel001(game));
+                game.setScreen(new MainScreen(game));
             }
         }, 3);
 

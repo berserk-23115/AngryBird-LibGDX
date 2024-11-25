@@ -23,7 +23,7 @@ public class angryBirds extends Game {
     public void create() {
         batch = new SpriteBatch();
 
-        setScreen(new LevelSelector(this));
+        setScreen(new splashBirdScreen(this));
     }
 
     @Override

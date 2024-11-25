@@ -91,10 +91,10 @@ public class catapult {
         // Load textures
         slingshotTexture = new Texture("TileMaps/catapult.png");
         projectileTexture = new Texture("TileMaps/blue.png");
-        trajectoryPointTexture = new Texture("libgdx.png");
+        trajectoryPointTexture = new Texture("TileMaps/dot.png");
 
-        slingshotPosition = new Vector2(60, 80);
-        projectilePosition = new Vector2(60,400);
+        slingshotPosition = new Vector2(60, 90);
+        projectilePosition = new Vector2(60,90);
 
         // Initialize projectileEquation
         projectileEquation = new ProjectileEquation();
@@ -103,7 +103,7 @@ public class catapult {
         // Define the projectile body
         BodyDef projectileBodyDef = new BodyDef();
         projectileBodyDef.type = BodyDef.BodyType.DynamicBody; // Set directly to Dynamic
-        projectileBodyDef.position.set(slingshotPosition.x / PPM, slingshotPosition.y / PPM);
+        projectileBodyDef.position.set((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM);
         projectileBodyDef.active = false; // Start inactive
 
         projectileBody = world.createBody(projectileBodyDef);
@@ -117,9 +117,7 @@ public class catapult {
         projectileFixtureDef.density = 1f;
         projectileFixtureDef.friction = 0f;
         projectileFixtureDef.restitution = 0.3f;// Bounciness
-//        projectileFixtureDef.filter.categoryBits=2;
-//        projectileFixtureDef.filter.maskBits=1;
-//        projectileFixtureDef.filter.groupIndex=0;
+
 
         projectileBody.createFixture(projectileFixtureDef);
         projectileShape.dispose();
@@ -132,7 +130,7 @@ public class catapult {
         // Create trajectory actor
         TextureRegion trajectoryTextureRegion = new TextureRegion(trajectoryPointTexture);
         trajectoryActor = new TrajectoryActor(controller, -9.8f, trajectoryTextureRegion);
-        trajectoryActor.setPosition(slingshotPosition.x, slingshotPosition.y);
+        trajectoryActor.setPosition(slingshotPosition.x+15, slingshotPosition.y+20);
 
         // Setup stage
         stage = new Stage(viewport);
@@ -178,7 +176,7 @@ public class catapult {
                 Vector2 launchVelocity = new Vector2(controller.power, 0f);
                 launchVelocity.setAngleDeg(controller.angle);
 
-                projectileBody.setTransform(slingshotPosition.x / PPM, slingshotPosition.y / PPM, 0); // Reset position
+                projectileBody.setTransform((slingshotPosition.x+15) / PPM, (slingshotPosition.y +50)/ PPM, 0); // Reset position
                 projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
                 projectileBody.setActive(true); // Activate
                 projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
@@ -196,7 +194,7 @@ public class catapult {
 
         batch.begin();
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
-        batch.draw(projectileTexture, projectilePosition.x - 10, projectilePosition.y - 10, 20, 20);
+        batch.draw(projectileTexture, projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
         batch.end();
 
         debugRenderer.render(world, camera.combined.cpy().scl(PPM));
@@ -211,7 +209,7 @@ public class catapult {
 
     private void resetProjectile() {
         projectileBody.setType(BodyDef.BodyType.StaticBody); // Set back to Static
-        projectileBody.setTransform(slingshotPosition.x / PPM, slingshotPosition.y / PPM, 0);
+        projectileBody.setTransform((slingshotPosition.x+15 )/ PPM, (slingshotPosition.y +20)/ PPM, 0);
         projectileBody.setLinearVelocity(0, 0); // Clear velocity
         projectileBody.setActive(false);
     }

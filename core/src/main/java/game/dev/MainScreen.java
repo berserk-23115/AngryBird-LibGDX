@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MainScreen implements Screen {
@@ -72,10 +73,10 @@ public class MainScreen implements Screen {
         logoBtn.setPosition(275,500);
 
 
-        exitBtn.setSize(80,80);
+        exitBtn.setSize(50,50);
         loadGameBtn.setSize(300,300);
         newGameBtn.setSize(300,300);
-        musicOnBtn.setSize(70,70);
+        musicOnBtn.setSize(50,50);
 
 
 
@@ -85,11 +86,30 @@ public class MainScreen implements Screen {
         exitBtn.setPosition(10, 10);
         musicOnBtn.setPosition(880,10);
 
+        musicOnBtn.addListener(new ClickListener(){
+            private boolean isMusicOn = true;
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click.play();
+                if (isMusicOn) {
+                    musicOnBtn.getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("LevelScreen/music_off.png")));
+                    // Add code to stop the music
+                    music.pause();
+                } else {
+                    musicOnBtn.getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("LevelScreen/music_on.png")));
+                    // Add code to play the music
+                    music.play();
+                }
+                isMusicOn = !isMusicOn;
+            }
+        });
+
         // Add click listeners to buttons
         newGameBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play(); // Play click sound
+                game.setScreen(new LevelSelector(game)); // Switch to the game screen
                 System.out.println("New Game Button Clicked");
             }
         });

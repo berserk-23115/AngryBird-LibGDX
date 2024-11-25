@@ -7,11 +7,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import game.dev.level.easyLevel001;
 
@@ -25,7 +27,7 @@ public class LevelSelector implements Screen {
     private Stage stage;
     private OrthographicCamera gameCam;
     private Texture playbtn,GameTitle;
-    private Music click;
+    private Music click , music;
 
 
 
@@ -40,6 +42,7 @@ public class LevelSelector implements Screen {
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, 960, 608);
         click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/game.wav"));
 
         //Stage for UI
         stage = new Stage(new FitViewport(960, 608, gameCam));
@@ -180,10 +183,21 @@ public class LevelSelector implements Screen {
         });
 
         musicOn.addListener(new ClickListener(){
+            private boolean isMusicOn = true;
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play();
-                stage.addActor(musicOff);
+                if (isMusicOn) {
+                    musicOn.getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("LevelScreen/music_off.png")));
+                    // Add code to stop the music
+                    music.pause();
+                } else {
+                    musicOn.getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("LevelScreen/music_on.png")));
+                    // Add code to play the music
+                    music.play();
+                }
+                isMusicOn = !isMusicOn;
             }
         });
 
