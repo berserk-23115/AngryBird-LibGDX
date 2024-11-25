@@ -9,6 +9,12 @@ public class blocks {
         this.blockTexture = new Texture(blockTexture);
         this.Health = Health;
     }
+    public Texture getBlockTexture(){
+        return blockTexture;
+    }
+    public void updateBlockTexture(Texture blockTexture){
+        this.blockTexture=blockTexture;
+    }
 
 
 }

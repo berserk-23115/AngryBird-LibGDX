@@ -532,12 +532,13 @@ public class easyLevel001 implements Screen {
     private Music click, music;
 
     private SpriteBatch batch;
-    private ArrayList<Body> blockBodies;
+    private ArrayList<Body> blockBodies,pigBodies;
+    private ArrayList<Body> birdBodies;
     public static final float PPM = 100f;
     private World world;
     private Box2DDebugRenderer b2dr;
 
-    private Texture woodBlockTexture;
+    private Texture woodBlockTexture,pigBlockTexture;
     private Texture backBtnTexture;
 
     private int mapWidth;
@@ -617,6 +618,7 @@ public class easyLevel001 implements Screen {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/game.wav"));
         woodBlockTexture = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
         backBtnTexture = new Texture("LevelScreen/backBtn.png");
+        pigBlockTexture = new Texture("Pigs/kingping.png");
 
         // Initialize stage and map
 
@@ -638,6 +640,7 @@ public class easyLevel001 implements Screen {
         // Initialize batch and blocks
         batch = new SpriteBatch();
         blockBodies = new ArrayList<>();
+        pigBodies = new ArrayList<>();
 
         // Create static and dynamic bodies
         initializeBodies();
@@ -664,6 +667,11 @@ public class easyLevel001 implements Screen {
 
         for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             createDynamicBody(object.getRectangle());
+        }
+
+        //PIGS ...
+        for(RectangleMapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            createDynamicBody2(object.getRectangle());
         }
     }
 
@@ -709,6 +717,28 @@ public class easyLevel001 implements Screen {
         shape.dispose();
     }
 
+    private void createDynamicBody2(Rectangle rect) {
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
+
+        Body body = world.createBody(bdef);
+        body.setUserData("Block");
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        fdef.density = 0.5f;
+        fdef.friction = 0.2f;
+        fdef.restitution = 0.2f;
+
+        body.createFixture(fdef);
+        pigBodies.add(body);
+        shape.dispose();
+    }
+
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
         gameCam.update();
@@ -728,7 +758,10 @@ public class easyLevel001 implements Screen {
         batch.setProjectionMatrix(gameCam.combined);
         batch.begin();
         for (Body body : blockBodies) {
-            batch.draw(woodBlockTexture, body.getPosition().x - 16 / PPM, body.getPosition().y - 16 / PPM, 32 / PPM, 32 / PPM);
+            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
+        }
+        for(Body body : pigBodies){
+            batch.draw(pigBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
         }
         batch.end();
         stage.act(delta);
