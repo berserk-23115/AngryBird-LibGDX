@@ -254,7 +254,7 @@ public class easyLevel001 implements Screen {
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
-        fdef.density = 0.5f;
+        fdef.density = 0.2f;
         fdef.friction = 0.2f;
         fdef.restitution = 0.2f;
 
