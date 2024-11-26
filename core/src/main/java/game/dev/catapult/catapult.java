@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import game.dev.birds.blue;
 
 public class catapult {
     private World world;
@@ -110,7 +111,7 @@ public class catapult {
         projectileBodyDef.active = false; // Start inactive
 
         projectileBody = world.createBody(projectileBodyDef);
-        projectileBody.setUserData("Bird");
+        projectileBody.setUserData(new blue(projectileBody));
 
         // Define the projectile shape
         CircleShape projectileShape = new CircleShape();
@@ -146,10 +147,10 @@ public class catapult {
 
         Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
 //        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
-                                        // Bottom LEFT ......
+        // Bottom LEFT ......
 
 
-     //   Gdx.input.setInputProcessor(new InputAdapter() {
+        //   Gdx.input.setInputProcessor(new InputAdapter() {
 //        InputProcessor processor1 = new InputAdapter(){
 //            @Override
 //            public boolean touchDown(int screenX, int screenY, int pointer, int button) {

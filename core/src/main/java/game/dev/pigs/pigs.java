@@ -14,6 +14,14 @@ public class pigs {
         this.body = body;
 
     }
+
+    public Integer getHealth() {
+        return Health;
+    }
+    public void setHealth(Integer health) {
+        Health = health;
+    }
+
     public Texture getpigTexture(){
         return pigTexture;
     }

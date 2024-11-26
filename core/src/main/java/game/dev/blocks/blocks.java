@@ -9,7 +9,7 @@ public class blocks {
     private Texture blockTexture;
     private Integer Health;
     private Body body;
-   // public static ArrayList<Body> blockbodies1;
+    // public static ArrayList<Body> blockbodies1;
     public blocks(String blockTexture, Integer Health, Body body){
         this.blockTexture = new Texture(blockTexture);
         this.Health = Health;
@@ -25,5 +25,11 @@ public class blocks {
 
     public Body getBody() {
         return body;
+    }
+    public Integer getHealth(){
+        return Health;
+    }
+    public void setHealth(Integer health) {
+        Health = health;
     }
 }

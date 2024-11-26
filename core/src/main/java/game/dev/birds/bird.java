@@ -1,12 +1,19 @@
 package game.dev.birds;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class bird {
     private Texture birdTexture;
-    private Integer Health;
-    public bird(Texture birdTexture, Integer Health) {
-        this.birdTexture = birdTexture;
-        this.Health = Health;
+    private Integer power;
+    public bird(String blockTexture, Integer Health, Body body) {
+        this.birdTexture = new Texture(blockTexture);
+        this.power = Health;
+    }
+    public Texture getBirdTexture() {
+        return birdTexture;
+    }
+    public Integer getPower() {
+        return power;
     }
 }
