@@ -1,5 +1,6 @@
 
 package game.dev.level;
+import game.dev.Screens.pauseMenu;
 import game.dev.blocks.blocks;
 
 import com.badlogic.gdx.*;
@@ -75,7 +76,7 @@ public class easyLevel001 implements Screen {
                 if (inputArea.contains(back_pos.x, back_pos.y)) {
                     System.out.println("Button Clicked");
                     click.play(); // Play the click sound
-                    game.setScreen(new MainScreen(game)); // Switch to the main screen
+                    game.setScreen(new pauseMenu(game)); // Switch to the main screen
                     return true; // Event handled
                 }
                 return false; // Event not handled
@@ -94,36 +95,36 @@ public class easyLevel001 implements Screen {
         world = new World(new Vector2(0, -9.81f), true);
 
 
-        //// Add contact listener
-//        world.setContactListener(new ContactListener() {
-//            @Override
-//            public void beginContact(Contact contact) {
-//                Fixture fixtureA = contact.getFixtureA();
-//                Fixture fixtureB = contact.getFixtureB();
-//                if((fixtureA.getBody().getUserData()=="Block" && fixtureB.getBody().getUserData()=="Bird")||(fixtureA.getBody().getUserData()=="FUddi" && fixtureB.getBody().getUserData()=="Block")){
-//                    System.out.println("SAX SUX ..... ");
-//
-//                    /// BlockHealth --- , if BlockHealth == 0 then destroy block
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void endContact(Contact contact) {
-//
-//            }
-//
-//            @Override
-//            public void preSolve(Contact contact, Manifold oldManifold) {
-//
-//            }
-//
-//            @Override
-//            public void postSolve(Contact contact, ContactImpulse impulse) {
-//
-//            }
-//        });
+        // Add contact listener
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                if((fixtureA.getBody().getUserData()=="Block" && fixtureB.getBody().getUserData()=="Bird")||(fixtureA.getBody().getUserData()=="FUddi" && fixtureB.getBody().getUserData()=="Block")){
+                    System.out.println("SAX SUX ..... ");
+
+                    /// BlockHealth --- , if BlockHealth == 0 then destroy block
+                }
+
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
 
         // Load assets
         click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
