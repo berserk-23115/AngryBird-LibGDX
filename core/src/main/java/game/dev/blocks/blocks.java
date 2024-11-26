@@ -32,4 +32,7 @@ public class blocks {
     public void setHealth(Integer health) {
         Health = health;
     }
+    public void dispose(){
+        blockTexture.dispose();
+    }
 }

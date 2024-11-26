@@ -1,7 +1,11 @@
 
 package game.dev.level;
+import game.dev.Screens.LevelSelector;
 import game.dev.Screens.pauseMenu;
 import game.dev.birds.bird;
+import game.dev.birds.blue;
+import game.dev.birds.chuck;
+import game.dev.birds.red;
 import game.dev.blocks.blocks;
 
 import com.badlogic.gdx.*;
@@ -35,6 +39,7 @@ import game.dev.pigs.pigs;
 import game.dev.pigs.smallpig;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class easyLevel001 implements Screen {
     private final angryBirds game;
@@ -47,12 +52,16 @@ public class easyLevel001 implements Screen {
 
     private SpriteBatch batch;
     private ArrayList<Body> blockBodies,pigBodies;
-    private ArrayList<blocks> blockBodies1;
+    private ArrayList<blocks> blockBodies1,deadBlocks;
     private ArrayList<pigs> pigBodies1;
+    private ArrayList<Body> bodiesToDestroy = new ArrayList<>();
+    public ArrayList<Body> availableBirds = new ArrayList<>();
+    public ArrayList<bird> avBirdsClass=new ArrayList<>();
+
 
 
     // Add bird bodies to this list which are to be assigned to the catapult
-    private ArrayList<Body> AssignedBirds;
+
 
 
 
@@ -61,7 +70,7 @@ public class easyLevel001 implements Screen {
     private Box2DDebugRenderer b2dr;
 
     private Texture woodBlockTexture,pigBlockTexture;
-    private Texture backBtnTexture;
+    private Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
 
     private int mapWidth;
     private int mapHeight;
@@ -81,7 +90,29 @@ public class easyLevel001 implements Screen {
                 if (inputArea.contains(back_pos.x, back_pos.y)) {
                     System.out.println("Button Clicked");
                     click.play(); // Play the click sound
-                    game.setScreen(new pauseMenu(game)); // Switch to the main screen
+                    game.setScreen(new LevelSelector(game)); // Switch to the main screen
+                    return true; // Event handled
+                }
+                return false; // Event not handled
+            }
+        } ;
+        //  stage.addActor(backBtn);
+        return processor2;
+    }
+    private InputProcessor createSaveBtn() {
+        Rectangle inputArea = new Rectangle(70, 550, 105, 45);
+        InputProcessor processor2 = new InputAdapter() {
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                // Convert screen coordinates to world coordinates if needed
+                Vector2 back_pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+
+                // Check if the touch is within the input area
+                if (inputArea.contains(back_pos.x, back_pos.y)) {
+                    System.out.println("Button Clicked");
+                    click.play(); // Play the click sound
+                     // Switch to the main screen
                     return true; // Event handled
                 }
                 return false; // Event not handled
@@ -91,6 +122,80 @@ public class easyLevel001 implements Screen {
         return processor2;
     }
 
+
+    private InputProcessor createReloadBtn() {
+        Rectangle inputArea = new Rectangle(185, 550, 48, 48);
+        InputProcessor processor2 = new InputAdapter() {
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                // Convert screen coordinates to world coordinates if needed
+                Vector2 back_pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+
+                // Check if the touch is within the input area
+                if (inputArea.contains(back_pos.x, back_pos.y)) {
+                    System.out.println("Button Clicked");
+                    click.play(); // Play the click sound
+                    game.setScreen(new easyLevel001(game)); // Switch to the main screen
+                    return true; // Event handled
+                }
+                return false; // Event not handled
+            }
+        } ;
+        //  stage.addActor(backBtn);
+        return processor2;
+    }
+
+
+    public void createBirdBodies(int count){
+        for(int i =0;i<count;i++){
+            Random random = new Random();
+            int bType = random.nextInt(3);
+            BodyDef birddef = new BodyDef();
+
+            birddef.type = BodyDef.BodyType.DynamicBody;
+            birddef.active = false;
+            Body birdBody = world.createBody(birddef);
+            switch (bType){
+                case 0:
+                    red lal=new red(birdBody);
+                    avBirdsClass.add(lal);
+                    birdBody.setUserData(lal);
+                    break;
+                case 1:
+                    blue neela=new blue(birdBody);
+                    avBirdsClass.add(neela);
+                    birdBody.setUserData(neela);
+                    break;
+                case 2:
+                    chuck pila=new chuck(birdBody);
+                    avBirdsClass.add(pila);
+                    birdBody.setUserData(pila);
+                    break;
+            }
+            CircleShape projectileShape = new CircleShape();
+            projectileShape.setRadius(10 / PPM); // Set radius based on texture size
+
+            FixtureDef projectileFixtureDef = new FixtureDef();
+            projectileFixtureDef.shape = projectileShape;
+            projectileFixtureDef.density = 1f;
+            projectileFixtureDef.friction = 0f;
+            projectileFixtureDef.restitution = 0.3f;// Bounciness
+
+
+            birdBody.createFixture(projectileFixtureDef);
+            availableBirds.add(birdBody);
+
+            projectileShape.dispose();
+
+
+        }
+        for(int i =0;i<avBirdsClass.size();i++){
+            System.out.println(avBirdsClass.get(i).getPower());
+        }
+
+    }
+
     public easyLevel001(angryBirds game) {
         this.game = game;
 
@@ -98,6 +203,12 @@ public class easyLevel001 implements Screen {
         gameCam = new OrthographicCamera();
         viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
         world = new World(new Vector2(0, -9.81f), true);
+        createBirdBodies(4);
+
+
+
+
+
 
 
         // Add contact listener
@@ -118,53 +229,16 @@ public class easyLevel001 implements Screen {
 
 
 
-                if((fixtureA.getBody().getUserData() instanceof blocks && fixtureB.getBody().getUserData() instanceof bird)||(fixtureA.getBody().getUserData() instanceof bird && fixtureB.getBody().getUserData() instanceof blocks)){
+                if((fixtureA.getBody().getUserData() instanceof blocks && fixtureB.getBody().getUserData() instanceof blue)||(fixtureA.getBody().getUserData() instanceof blue && fixtureB.getBody().getUserData() instanceof blocks)){
                     System.out.println("SAX SUX ..... ");
 
-//                    if(fixtureA.getBody().getUserData() == "Block"){
-//                        System.out.println("choosi");
-//
-//
-//                        for(blocks b: blockBodies1) {
-//                            if ( b.getBody().equals(fixtureA.getBody()) ||  b.getBody().equals(fixtureB.getBody()) ){
-//                                blocks currblock= b;
-//                            }
-//                        }
-//                        bird currBird=(bird) fixtureB.getBody().getUserData();
-//                        wood currWood=(wood) fixtureA.getBody().getUserData();
-//
-//
-//
-//
-//                        currWood.setHealth(currWood.getHealth()-currBird.getPower());
-//                        if(currWood.getHealth()<=0){
-//                            world.destroyBody(fixtureA.getBody());}
-//
-//                    }
-//                    if(fixtureB.getBody().getUserData() == "Block"){
-//                        System.out.println("choosi");
-//
-//
-//
-//                        bird currBird=(bird) fixtureA.getBody().getUserData();
-//                        wood currWood=(wood) fixtureB.getBody().getUserData();
-//
-//
-//
-//
-//                        currWood.setHealth(currWood.getHealth()-currBird.getPower());
-//                        if(currWood.getHealth()<=0){
-//                            world.destroyBody(fixtureB.getBody());}
-//
-//                    }
 
-
-                    if(fixtureA.getUserData() instanceof wood){
+                    if(fixtureA.getBody().getUserData() instanceof wood){
                         System.out.println("choosi");
 
 
 
-                        bird currBird=(bird) fixtureB.getBody().getUserData();
+                        blue currBird=(blue) fixtureB.getBody().getUserData();
                         wood currWood= (wood) fixtureA.getBody().getUserData();
 
 
@@ -172,14 +246,17 @@ public class easyLevel001 implements Screen {
 
                         currWood.setHealth(currWood.getHealth()-currBird.getPower());
                         if(currWood.getHealth()<=0){
-                         world.destroyBody(fixtureA.getBody());}
+                            deadBlocks.add(currWood);
+                            bodiesToDestroy.add(fixtureA.getBody());
+
+                        }
 
                     }
-                    else if(fixtureB.getUserData() instanceof wood) {
+                    else if(fixtureB.getBody().getUserData() instanceof wood) {
                         System.out.println("choosi");
 
 
-                        bird currBird=(bird) fixtureA.getBody().getUserData();
+                        blue currBird=(blue) fixtureA.getBody().getUserData();
                         wood currWood = (wood) fixtureB.getBody().getUserData();
 
 
@@ -187,7 +264,8 @@ public class easyLevel001 implements Screen {
 
                         currWood.setHealth(currWood.getHealth() - currBird.getPower());
                         if (currWood.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            deadBlocks.add(currWood);
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
                     if(fixtureA.getBody().getUserData() instanceof glass){
@@ -318,7 +396,7 @@ public class easyLevel001 implements Screen {
 
                         currCon.setHealth(currCon.getHealth() - currBird.getPower());
                         if (currCon.getHealth() <= 0) {
-                            world.destroyBody(fixtureA.getBody());
+                            bodiesToDestroy.add(fixtureA.getBody());
                         }
 
                     } else if (fixtureB.getBody().getUserData() instanceof kingpig) {
@@ -329,7 +407,7 @@ public class easyLevel001 implements Screen {
 
                         currCon.setHealth(currCon.getHealth() - currBird.getPower());
                         if (currCon.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
 
@@ -366,10 +444,10 @@ public class easyLevel001 implements Screen {
                         currWood.setHealth(currWood.getHealth() - 10);
                         currPig.setHealth(currPig.getHealth() - 10);
                         if (currWood.getHealth() <= 0) {
-                            world.destroyBody(fixtureA.getBody());
+                            bodiesToDestroy.add(fixtureA.getBody());
                         }
                         if (currPig.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
 
 
@@ -382,10 +460,10 @@ public class easyLevel001 implements Screen {
                         currWood.setHealth(currWood.getHealth() - 10);
                         currPig.setHealth(currPig.getHealth() - 10);
                         if (currWood.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                         if (currPig.getHealth() <= 0) {
-                            world.destroyBody(fixtureA.getBody());
+                            bodiesToDestroy.add(fixtureA.getBody());
                         }
                     }
                     if (fixtureA.getBody().getUserData() instanceof glass) {
@@ -476,6 +554,8 @@ public class easyLevel001 implements Screen {
         woodBlockTexture = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
         backBtnTexture = new Texture("LevelScreen/backBtn.png");
         pigBlockTexture = new Texture("Pigs/kingping.png");
+        saveBtnTexture = new Texture("pauseMenu/saveBtn.png");
+        reloadBtnTexture = new Texture("pauseMenu/reset.png");
 
         // Initialize stage and map
 
@@ -500,12 +580,13 @@ public class easyLevel001 implements Screen {
         // blockBodies = new ArrayList<>();
         blockBodies1 = new ArrayList<>();
         pigBodies1 = new ArrayList<>();
+        deadBlocks= new ArrayList<>();
 
         // Create static and dynamic bodies
         initializeBodies();
 
         // Create slingshot
-        slingshotGame = new catapult(viewport, world);
+        slingshotGame = new catapult(viewport, world, availableBirds,avBirdsClass);
 
 
 
@@ -518,10 +599,14 @@ public class easyLevel001 implements Screen {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(slingshotGame.getInputProcessor());
         multiplexer.addProcessor(createBackButton());
+        multiplexer.addProcessor(createSaveBtn());
+        multiplexer.addProcessor(createReloadBtn());
 
         Gdx.input.setInputProcessor(multiplexer);
 
     }
+
+
 
     private void initializeBodies() {
         for (RectangleMapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
@@ -565,7 +650,7 @@ public class easyLevel001 implements Screen {
         bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
 
         Body body = world.createBody(bdef);
-        body.setUserData("Block");
+
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
@@ -579,11 +664,15 @@ public class easyLevel001 implements Screen {
         body.createFixture(fdef);
         //  blockBodies.add(body);
         wood Wood=new wood(body);
+        body.setUserData(Wood);
         blockBodies1.add(Wood);
 
         //wood Wood=new wood(body);
         shape.dispose();
     }
+
+
+
 
     private void createDynamicBody2(Rectangle rect) {
         BodyDef bdef = new BodyDef();
@@ -613,13 +702,24 @@ public class easyLevel001 implements Screen {
         world.step(1 / 60f, 6, 2);
         gameCam.update();
         tiledMapRenderer.setView(gameCam);
+        for(blocks b: deadBlocks){
+            blockBodies1.remove(b);
+            b.dispose();
+        }
+deadBlocks.clear();
+        for (Body body : bodiesToDestroy) {
+            body.setActive(false);
+
+            world.destroyBody(body);
+        }
+        bodiesToDestroy.clear();
     }
 
     @Override
     public void render(float delta) {
         update(delta);
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         tiledMapRenderer.render();
         slingshotGame.render(delta);
@@ -631,7 +731,9 @@ public class easyLevel001 implements Screen {
             batch.draw(b.getBlockTexture(), b.getBody().getPosition().x-30/ PPM, b.getBody().getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
 
         }
-        batch.draw(backBtnTexture,10 / PPM, 550 / PPM,50/PPM,50/PPM);
+        batch.draw(backBtnTexture,10 / PPM, 550 / PPM,48/PPM,48/PPM);
+        batch.draw(saveBtnTexture,70 / PPM, 550 / PPM,105/PPM,48/PPM);
+        batch.draw(reloadBtnTexture,185 / PPM, 550 / PPM,48/PPM,48/PPM);
 //        for (Body body : blockBodies) {
 //            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
 //        }
@@ -684,6 +786,4 @@ public class easyLevel001 implements Screen {
         click.dispose();
         music.dispose();
     }
-
-
 }

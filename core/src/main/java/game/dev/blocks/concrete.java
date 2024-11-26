@@ -7,7 +7,7 @@ public class concrete extends blocks{
     private Texture blockTexture;
     private Body body;
     public concrete(Body body){
-        super("Blocks/ConcreteBlock.png", 20,body);
+        super("Blocks/ConcreteBlock.png", 16,body);
     }
     public Texture getBlockTexture(){
         return blockTexture;

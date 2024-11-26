@@ -15,7 +15,11 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import game.dev.birds.bird;
 import game.dev.birds.blue;
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 
 public class catapult {
     private World world;
@@ -34,6 +38,11 @@ public class catapult {
     private Box2DDebugRenderer debugRenderer; // Debug renderer
     public static final float PPM = 100f;
     Body projectileBody;
+    private ArrayList<bird> avBirdClass=new ArrayList<>();
+    private ArrayList<Body> chidiyas = new ArrayList<>();
+    private bird projectBodyClass;
+    private Integer index=0;
+
 
     public static class Controller {
         public float power = 50f;
@@ -85,47 +94,58 @@ public class catapult {
         }
     }
 
-    public catapult(Viewport viewport, World duniya) {
+    public catapult(Viewport viewport, World duniya, ArrayList<Body> chidiyas, ArrayList<bird> avBirdClass) {
+
         world = duniya;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
-        debugRenderer = new Box2DDebugRenderer(); // Initialize debug renderer
+        debugRenderer = new Box2DDebugRenderer();
+        this.avBirdClass=avBirdClass;// Initialize debug renderer
+        this.chidiyas=chidiyas;
 
         // Load textures
         slingshotTexture = new Texture("TileMaps/catapult.png");
-        projectileTexture = new Texture("TileMaps/blue.png");
+
         trajectoryPointTexture = new Texture("TileMaps/dot.png");
 
         slingshotPosition = new Vector2(60, 90);
         projectilePosition = new Vector2(60,90);
 
+
+        // Sirji Position Set for the projectile BIRDS IN RENDER FUNCITON using ArrayList Bodies
+
+
+
         // Initialize projectileEquation
         projectileEquation = new ProjectileEquation();
         projectileEquation.gravity = -9.8f;
+        projectileBody= chidiyas.get(index);
+        projectBodyClass=avBirdClass.get(index);
+        projectileBody.setTransform(projectilePosition.x-10 , projectilePosition.y -10,0);
 
         // Define the projectile body
-        BodyDef projectileBodyDef = new BodyDef();
-        projectileBodyDef.type = BodyDef.BodyType.DynamicBody; // Set directly to Dynamic
-        projectileBodyDef.position.set((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM);
-        projectileBodyDef.active = false; // Start inactive
 
-        projectileBody = world.createBody(projectileBodyDef);
-        projectileBody.setUserData(new blue(projectileBody));
-
-        // Define the projectile shape
-        CircleShape projectileShape = new CircleShape();
-        projectileShape.setRadius(10 / PPM); // Set radius based on texture size
-
-        FixtureDef projectileFixtureDef = new FixtureDef();
-        projectileFixtureDef.shape = projectileShape;
-        projectileFixtureDef.density = 1f;
-        projectileFixtureDef.friction = 0f;
-        projectileFixtureDef.restitution = 0.3f;// Bounciness
-
-
-        projectileBody.createFixture(projectileFixtureDef);
-        projectileShape.dispose();
+//        projectileBodyDef.type = BodyDef.BodyType.DynamicBody; // Set directly to Dynamic
+//        projectileBodyDef.position.set((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM);
+//        projectileBodyDef.active = false; // Start inactive
+//
+//        projectileBody = world.createBody(projectileBodyDef);
+//        projectileBody.setUserData(new blue(projectileBody));
+//
+//        // Define the projectile shape
+//        CircleShape projectileShape = new CircleShape();
+//        projectileShape.setRadius(10 / PPM); // Set radius based on texture size
+//
+//        FixtureDef projectileFixtureDef = new FixtureDef();
+//        projectileFixtureDef.shape = projectileShape;
+//        projectileFixtureDef.density = 1f;
+//        projectileFixtureDef.friction = 0f;
+//        projectileFixtureDef.restitution = 0.3f;// Bounciness
+//
+//
+//        projectileBody.createFixture(projectileFixtureDef);
+//        projectileShape.dispose();
 
         // Initialize controller
         controller = new Controller();
@@ -145,68 +165,7 @@ public class catapult {
         dragStart = new Vector2();
         isDragging = false;
 
-        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
-//        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
-        // Bottom LEFT ......
 
-
-        //   Gdx.input.setInputProcessor(new InputAdapter() {
-//        InputProcessor processor1 = new InputAdapter(){
-//            @Override
-//            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-//                if(InputArea.contains(pos.x, pos.y)) {
-//                    System.out.println("Touched Catapult");
-//                    dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
-//                    isDragging = true;
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean touchDragged(int screenX, int screenY, int pointer) {
-//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-//                if(InputArea.contains(pos.x, pos.y)) {
-//                    System.out.println("Dragging Catapult");
-//                    if (isDragging) {
-//                    Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-//                    float maxDragDistance = 50f; // Maximum dragging distance
-//
-//                    float distance = dragStart.dst(dragEnd);
-//                    if (distance > maxDragDistance) {
-//                        dragEnd = dragStart.cpy().lerp(dragEnd, maxDragDistance / distance);
-//                    }
-//
-//                    controller.power = dragStart.dst(dragEnd) * 3; // Scale power
-//                    controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
-//
-//                    projectilePosition.set(dragEnd.x, dragEnd.y);
-//                    }
-//                    return true;}return false;
-//            }
-//
-//            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-//                if(InputArea.contains(pos.x, pos.y)) {
-//                    System.out.println("Input area touch released!");
-//                isDragging = false;
-//
-//                projectileEquation.startVelocity.set(controller.power, 0f);
-//                projectileEquation.startVelocity.setAngleDeg(controller.angle);
-//
-//                Vector2 launchVelocity = new Vector2(controller.power, 0f);
-//                launchVelocity.setAngleDeg(controller.angle);
-//
-//                projectileBody.setTransform((slingshotPosition.x+15) / PPM, (slingshotPosition.y +50)/ PPM, 0); // Reset position
-//                projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
-//                projectileBody.setActive(true); // Activate
-//                projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
-//
-//                return true;}
-//                return false;
-//            }
-//        };
     }
     public InputProcessor getInputProcessor(){
         Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
@@ -262,7 +221,7 @@ public class catapult {
                     projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
                     projectileBody.setActive(true); // Activate
                     projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
-
+index++;
                     return true;}
                 return false;
             }
@@ -275,28 +234,50 @@ public class catapult {
 
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
+        projectileBody=chidiyas.get(index);
+        projectBodyClass=avBirdClass.get(index);
+        projectileBody.setTransform(projectilePosition.x-10 , projectilePosition.y -10,0);
 
+        
         batch.begin();
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
-        batch.draw(projectileTexture, projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
+        batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
+
+        // Assuming avBirdClass is an ArrayList or similar collection of birds
+        float startX = 50/PPM; // Starting X position
+        float startY = 100/PPM; // Starting Y position
+        float gap = 30/PPM;    // Gap between birds (adjust as needed)
+
+        for (int i = index+1; i < avBirdClass.size(); i++) {
+            bird cur = avBirdClass.get(i); // Get the current bird
+
+            // Calculate positions based on index
+            float floatX = startX + (i * gap) * PPM; // X position for this bird
+            float floatY = startY;                   // Y position (static or can vary)
+
+            // Draw the bird at the calculated position
+            batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
+        }
+
+
         batch.end();
 
         debugRenderer.render(world, camera.combined.cpy().scl(PPM));
 
         stage.act(delta);
         stage.draw();
-        if (projectilePosition.y < 0) {
-            resetProjectile(); // Call to reset
-        }
+//        if (projectilePosition.y < 0) {
+////            resetProjectile(); // Call to reset
+//        }
 
     }
 
-    private void resetProjectile() {
-        projectileBody.setType(BodyDef.BodyType.StaticBody); // Set back to Static
-        projectileBody.setTransform((slingshotPosition.x+15 )/ PPM, (slingshotPosition.y +20)/ PPM, 0);
-        projectileBody.setLinearVelocity(0, 0); // Clear velocity
-        projectileBody.setActive(false);
-    }
+//    private void resetProjectile() {
+//        projectileBody.setType(BodyDef.BodyType.StaticBody); // Set back to Static
+//        projectileBody.setTransform((slingshotPosition.x+15 )/ PPM, (slingshotPosition.y +20)/ PPM, 0);
+//        projectileBody.setLinearVelocity(0, 0); // Clear velocity
+//        projectileBody.setActive(false);
+//    }
 
     public void dispose() {
         batch.dispose();

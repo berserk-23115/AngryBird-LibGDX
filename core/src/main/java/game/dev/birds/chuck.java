@@ -8,7 +8,7 @@ public class chuck extends bird{
 
     public chuck(Body body){
 
-        super("Blocks/WoodBlock.png", 10, body);
+        super("Birds/chuck.png", 12, body);
         this.body = body;
 
 

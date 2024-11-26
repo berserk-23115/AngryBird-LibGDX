@@ -27,10 +27,7 @@
  </layer>
  <objectgroup id="2" name="Ground">
   <object id="1" x="0" y="512.402" width="961.348" height="95.183"/>
-  <object id="10" x="957.27" y="1.50989" width="4.52967" height="510.343"/>
-  <object id="11" x="0" y="1.50989" width="3.01978" height="510.343"/>
   <object id="12" x="1040.31" y="336.705"/>
-  <object id="13" x="3.01978" y="3.01978" width="936.132" height="6.03956"/>
  </objectgroup>
  <objectgroup id="4" name="Blocks">
   <object id="2" x="736.914" y="449.642" width="62.4503" height="62.4503"/>
