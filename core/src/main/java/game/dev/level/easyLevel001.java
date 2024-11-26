@@ -1,7 +1,6 @@
 
 package game.dev.level;
-import game.dev.Screens.LevelSelector;
-import game.dev.Screens.pauseMenu;
+import game.dev.Screens.*;
 import game.dev.birds.bird;
 import game.dev.birds.blue;
 import game.dev.birds.chuck;
@@ -27,7 +26,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import game.dev.Screens.MainScreen;
 import game.dev.angryBirds;
 import game.dev.blocks.concrete;
 import game.dev.blocks.glass;
@@ -441,8 +439,8 @@ public class easyLevel001 implements Screen {
                         pigs currPig = (pigs) fixtureB.getBody().getUserData();
                         wood currWood = (wood) fixtureA.getBody().getUserData();
 
-                        currWood.setHealth(currWood.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currWood.setHealth(currWood.getHealth()-currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currWood.getHealth());
                         if (currWood.getHealth() <= 0) {
                             bodiesToDestroy.add(fixtureA.getBody());
                         }
@@ -457,8 +455,8 @@ public class easyLevel001 implements Screen {
                         wood currWood = (wood) fixtureB.getBody().getUserData();
                         pigs currPig = (pigs) fixtureA.getBody().getUserData();
 
-                        currWood.setHealth(currWood.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currWood.setHealth(currWood.getHealth()-currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currWood.getHealth());
                         if (currWood.getHealth() <= 0) {
                             bodiesToDestroy.add(fixtureB.getBody());
                         }
@@ -472,8 +470,8 @@ public class easyLevel001 implements Screen {
                         glass currGlass = (glass) fixtureA.getBody().getUserData();
                         pigs currPig = (pigs) fixtureB.getBody().getUserData();
 
-                        currGlass.setHealth(currGlass.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currGlass.setHealth(currGlass.getHealth() - currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currGlass.getHealth());
                         if (currGlass.getHealth() <= 0) {
                             world.destroyBody(fixtureA.getBody());
                         }
@@ -488,8 +486,8 @@ public class easyLevel001 implements Screen {
                         pigs  currPig = (pigs) fixtureA.getBody().getUserData();
 
 
-                        currGlass.setHealth(currGlass.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currGlass.setHealth(currGlass.getHealth() - currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currGlass.getHealth());
                         if (currGlass.getHealth() <= 0) {
                             world.destroyBody(fixtureB.getBody());
                         }
@@ -503,8 +501,8 @@ public class easyLevel001 implements Screen {
                         concrete currCon = (concrete) fixtureA.getBody().getUserData();
                         pigs currPig = (pigs) fixtureB.getBody().getUserData();
 
-                        currCon.setHealth(currCon.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currCon.setHealth(currCon.getHealth() - currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currCon.getHealth());
                         if (currCon.getHealth() <= 0) {
                             world.destroyBody(fixtureA.getBody());
                         }
@@ -518,8 +516,8 @@ public class easyLevel001 implements Screen {
                         concrete currCon = (concrete) fixtureB.getBody().getUserData();
                         pigs currPig = (pigs) fixtureA.getBody().getUserData();
 
-                        currCon.setHealth(currCon.getHealth() - 10);
-                        currPig.setHealth(currPig.getHealth() - 10);
+                        currCon.setHealth(currCon.getHealth() - currPig.getHealth());
+                        currPig.setHealth(currPig.getHealth() - currCon.getHealth());
                         if (currCon.getHealth() <= 0) {
                             world.destroyBody(fixtureB.getBody());
                         }
@@ -720,6 +718,14 @@ deadBlocks.clear();
         update(delta);
 
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (pigBodies1.size() == 0 && blockBodies1.size() > 0) {
+            // Set to the Win Screen
+            game.setScreen(new winScreen(game));
+        } else if (pigBodies1.size() > 0 && blockBodies1.size() == 0) {
+            // Set to the Lose Screen
+            game.setScreen(new loseScreen(game));
+        }
 
         tiledMapRenderer.render();
         slingshotGame.render(delta);

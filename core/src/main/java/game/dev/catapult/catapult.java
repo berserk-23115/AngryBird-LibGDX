@@ -122,7 +122,7 @@ public class catapult {
         projectileEquation.gravity = -9.8f;
         projectileBody= chidiyas.get(index);
         projectBodyClass=avBirdClass.get(index);
-        projectileBody.setTransform(projectilePosition.x-10 , projectilePosition.y -10,0);
+        projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
 
         // Define the projectile body
 
@@ -221,7 +221,7 @@ public class catapult {
                     projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
                     projectileBody.setActive(true); // Activate
                     projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
-index++;
+                    if(index<4) {index++;;}
                     return true;}
                 return false;
             }
@@ -234,33 +234,49 @@ index++;
 
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
+
+
+
+        batch.begin();
         projectileBody=chidiyas.get(index);
         projectBodyClass=avBirdClass.get(index);
-        projectileBody.setTransform(projectilePosition.x-10 , projectilePosition.y -10,0);
-
-        
-        batch.begin();
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
-
+        System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
         // Assuming avBirdClass is an ArrayList or similar collection of birds
         float startX = 50/PPM; // Starting X position
         float startY = 100/PPM; // Starting Y position
         float gap = 30/PPM;    // Gap between birds (adjust as needed)
 
-        for (int i = index+1; i < avBirdClass.size(); i++) {
-            bird cur = avBirdClass.get(i); // Get the current bird
+        try {
+            // Validate index
+            if (index < 0 || index >= avBirdClass.size()) {
+                throw new ArrayIndexOutOfBoundsException("Invalid starting index: " + index);
+            }
 
-            // Calculate positions based on index
-            float floatX = startX + (i * gap) * PPM; // X position for this bird
-            float floatY = startY;                   // Y position (static or can vary)
+            // Loop through the list safely
+            for (int i = index + 1; i < avBirdClass.size(); i++) {
+                bird cur = avBirdClass.get(i); // Safe access
 
-            // Draw the bird at the calculated position
-            batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
+                // Calculate positions
+                float floatX = startX + (i * gap) * PPM; // X position
+                float floatY = startY;                   // Y position (static or can vary)
+
+                // Draw the bird
+                batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
 
 
+
         batch.end();
+
 
         debugRenderer.render(world, camera.combined.cpy().scl(PPM));
 
