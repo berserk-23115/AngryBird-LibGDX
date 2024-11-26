@@ -1,12 +1,23 @@
 package game.dev.pigs;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class pigs {
     private Texture pigTexture;
     private Integer Health;
-    public pigs(Texture pigTexture, Integer Health) {
-        this.pigTexture = pigTexture;
+    private Body body;
+    // public static ArrayList<Body> blockbodies1;
+    public pigs(String pigTexture, Integer Health, Body body){
+        this.pigTexture = new Texture(pigTexture);
         this.Health = Health;
+        this.body = body;
+
+    }
+    public Texture getpigTexture(){
+        return pigTexture;
+    }
+    public Body getBody() {
+        return body;
     }
 }

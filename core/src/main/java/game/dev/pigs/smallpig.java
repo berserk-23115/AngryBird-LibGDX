@@ -1,11 +1,10 @@
 package game.dev.pigs;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class smallpig extends pigs{
-    private Texture pigTexture;
-    private Integer Health;
-    public smallpig(Texture pigTexture) {
-        super(pigTexture, 10);
+    public smallpig(Body body) {
+        super("Pigs/pig.png", 10,body);
     }
 }

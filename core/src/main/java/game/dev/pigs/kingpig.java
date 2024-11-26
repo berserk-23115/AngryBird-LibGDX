@@ -1,9 +1,10 @@
 package game.dev.pigs;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class kingpig extends pigs{
-    public kingpig(Texture pigTexture) {
-        super(pigTexture, 50);
+    public kingpig(Body body) {
+        super("Pigs/kingping.png", 50,body);
     }
 }

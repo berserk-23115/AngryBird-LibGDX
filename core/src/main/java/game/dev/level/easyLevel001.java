@@ -25,6 +25,8 @@ import game.dev.Screens.MainScreen;
 import game.dev.angryBirds;
 import game.dev.blocks.wood;
 import game.dev.catapult.catapult;
+import game.dev.pigs.kingpig;
+import game.dev.pigs.pigs;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,8 @@ public class easyLevel001 implements Screen {
 
     private SpriteBatch batch;
     private ArrayList<Body> blockBodies,pigBodies;
+    private ArrayList<blocks> blockBodies1;
+    private ArrayList<pigs> pigBodies1;
 
 
     // Add bird bodies to this list which are to be assigned to the catapult
@@ -58,31 +62,27 @@ public class easyLevel001 implements Screen {
 
     private catapult slingshotGame;
 
-    private void createBackButton() {
-        Skin skin = new Skin();
-        skin.add("backBtn", backBtnTexture);
-        ImageButton.ImageButtonStyle backStyle = new ImageButton.ImageButtonStyle();
-        backStyle.up = skin.getDrawable("backBtn");
-
-        ImageButton backBtn = new ImageButton(backStyle);
-        backBtn.setSize(50 / PPM, 50 / PPM);
-        backBtn.setPosition(10 / PPM, 550 / PPM);
-
+    private InputProcessor createBackButton() {
         Rectangle inputArea = new Rectangle(10, 550, 50, 50);
+        InputProcessor processor2 = new InputAdapter() {
 
-
-       // backBtn.setBounds(10/PPM, 550/PPM, 50/PPM, 50/PPM);
-        backBtn.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Vector2 pos = new Vector2(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-                if(inputArea.contains(pos.x, pos.y)) {
-                System.out.println("Button Clicked");
-                click.play();
-                game.setScreen(new MainScreen(game));}
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                // Convert screen coordinates to world coordinates if needed
+                Vector2 back_pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+
+                // Check if the touch is within the input area
+                if (inputArea.contains(back_pos.x, back_pos.y)) {
+                    System.out.println("Button Clicked");
+                    click.play(); // Play the click sound
+                    game.setScreen(new MainScreen(game)); // Switch to the main screen
+                    return true; // Event handled
+                }
+                return false; // Event not handled
             }
-        });
-        stage.addActor(backBtn);
+        } ;
+      //  stage.addActor(backBtn);
+        return processor2;
     }
 
     public easyLevel001(angryBirds game) {
@@ -95,35 +95,35 @@ public class easyLevel001 implements Screen {
 
 
         //// Add contact listener
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                if((fixtureA.getBody().getUserData()=="Block" && fixtureB.getBody().getUserData()=="Bird")||(fixtureA.getBody().getUserData()=="FUddi" && fixtureB.getBody().getUserData()=="Block")){
-                    System.out.println("SAX SUX ..... ");
-
-                    /// BlockHealth --- , if BlockHealth == 0 then destroy block
-                }
-
-
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        });
+//        world.setContactListener(new ContactListener() {
+//            @Override
+//            public void beginContact(Contact contact) {
+//                Fixture fixtureA = contact.getFixtureA();
+//                Fixture fixtureB = contact.getFixtureB();
+//                if((fixtureA.getBody().getUserData()=="Block" && fixtureB.getBody().getUserData()=="Bird")||(fixtureA.getBody().getUserData()=="FUddi" && fixtureB.getBody().getUserData()=="Block")){
+//                    System.out.println("SAX SUX ..... ");
+//
+//                    /// BlockHealth --- , if BlockHealth == 0 then destroy block
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void endContact(Contact contact) {
+//
+//            }
+//
+//            @Override
+//            public void preSolve(Contact contact, Manifold oldManifold) {
+//
+//            }
+//
+//            @Override
+//            public void postSolve(Contact contact, ContactImpulse impulse) {
+//
+//            }
+//        });
 
         // Load assets
         click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
@@ -135,6 +135,7 @@ public class easyLevel001 implements Screen {
         // Initialize stage and map
 
         // Use InputMultiplexer for handling multiple input processors
+        stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
 
@@ -151,8 +152,9 @@ public class easyLevel001 implements Screen {
 
         // Initialize batch and blocks
         batch = new SpriteBatch();
-        blockBodies = new ArrayList<>();
-        pigBodies = new ArrayList<>();
+       // blockBodies = new ArrayList<>();
+        blockBodies1 = new ArrayList<>();
+        pigBodies1 = new ArrayList<>();
 
         // Create static and dynamic bodies
         initializeBodies();
@@ -161,15 +163,19 @@ public class easyLevel001 implements Screen {
         slingshotGame = new catapult(viewport, world);
 
 
+
         // Set camera position
         gameCam.position.set(mapWidth / 2f / PPM, mapHeight / 2f / PPM, 0);
         gameCam.update();
         stage = new Stage(viewport);
 
 
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(slingshotGame.getInputProcessor());
+        multiplexer.addProcessor(createBackButton());
 
-        // Create back button
-        createBackButton();
+        Gdx.input.setInputProcessor(multiplexer);
+
     }
 
     private void initializeBodies() {
@@ -226,8 +232,11 @@ public class easyLevel001 implements Screen {
         fdef.restitution = 0.2f;
 
         body.createFixture(fdef);
-        blockBodies.add(body);
+      //  blockBodies.add(body);
         wood Wood=new wood(body);
+        blockBodies1.add(Wood);
+
+        //wood Wood=new wood(body);
         shape.dispose();
     }
 
@@ -237,7 +246,7 @@ public class easyLevel001 implements Screen {
         bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
 
         Body body = world.createBody(bdef);
-        body.setUserData("Block");
+        body.setUserData("Pig");
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
@@ -249,7 +258,9 @@ public class easyLevel001 implements Screen {
         fdef.restitution = 0.2f;
 
         body.createFixture(fdef);
-        pigBodies.add(body);
+        kingpig king=new kingpig(body);
+        pigBodies1.add(king);
+        //pigBodies.add(body);
         shape.dispose();
     }
 
@@ -271,16 +282,21 @@ public class easyLevel001 implements Screen {
 
         batch.setProjectionMatrix(gameCam.combined);
         batch.begin();
-        for(Body body : blocks.blockbodies1){
-            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
+        for(blocks b : blockBodies1){
+            batch.draw(woodBlockTexture, b.getBody().getPosition().x-30/ PPM, b.getBody().getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
 
         }
-        for (Body body : blockBodies) {
-            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
+        batch.draw(backBtnTexture,10 / PPM, 550 / PPM,50/PPM,50/PPM);
+//        for (Body body : blockBodies) {
+//            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
+//        }
+        for(pigs p : pigBodies1){
+            batch.draw(pigBlockTexture, p.getBody().getPosition().x-30/ PPM, p.getBody().getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
         }
-        for(Body body : pigBodies){
-            batch.draw(pigBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
-        }
+//        for(Body body : pigBodies){
+//            batch.draw(pigBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
+//        }
+
         batch.end();
         stage.act(delta);
         stage.draw();

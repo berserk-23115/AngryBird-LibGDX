@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class wood extends blocks{
-
+private Body body;
 
     public wood(Body body){
 
-        super("Blocks/WoodBlock.png", 10);
-        blockbodies1.add(body);
+        super("Blocks/WoodBlock.png", 10, body);
+        this.body = body;
 
 
     }

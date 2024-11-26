@@ -3,6 +3,7 @@ package game.dev.catapult;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -148,7 +149,68 @@ public class catapult {
                                         // Bottom LEFT ......
 
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
+     //   Gdx.input.setInputProcessor(new InputAdapter() {
+//        InputProcessor processor1 = new InputAdapter(){
+//            @Override
+//            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+//                if(InputArea.contains(pos.x, pos.y)) {
+//                    System.out.println("Touched Catapult");
+//                    dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
+//                    isDragging = true;
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean touchDragged(int screenX, int screenY, int pointer) {
+//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+//                if(InputArea.contains(pos.x, pos.y)) {
+//                    System.out.println("Dragging Catapult");
+//                    if (isDragging) {
+//                    Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+//                    float maxDragDistance = 50f; // Maximum dragging distance
+//
+//                    float distance = dragStart.dst(dragEnd);
+//                    if (distance > maxDragDistance) {
+//                        dragEnd = dragStart.cpy().lerp(dragEnd, maxDragDistance / distance);
+//                    }
+//
+//                    controller.power = dragStart.dst(dragEnd) * 3; // Scale power
+//                    controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
+//
+//                    projectilePosition.set(dragEnd.x, dragEnd.y);
+//                    }
+//                    return true;}return false;
+//            }
+//
+//            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+//                Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+//                if(InputArea.contains(pos.x, pos.y)) {
+//                    System.out.println("Input area touch released!");
+//                isDragging = false;
+//
+//                projectileEquation.startVelocity.set(controller.power, 0f);
+//                projectileEquation.startVelocity.setAngleDeg(controller.angle);
+//
+//                Vector2 launchVelocity = new Vector2(controller.power, 0f);
+//                launchVelocity.setAngleDeg(controller.angle);
+//
+//                projectileBody.setTransform((slingshotPosition.x+15) / PPM, (slingshotPosition.y +50)/ PPM, 0); // Reset position
+//                projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
+//                projectileBody.setActive(true); // Activate
+//                projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
+//
+//                return true;}
+//                return false;
+//            }
+//        };
+    }
+    public InputProcessor getInputProcessor(){
+        Rectangle InputArea = new Rectangle(slingshotPosition.x-50, slingshotPosition.y-50, 150,150);
+
+        InputProcessor processor1 = new InputAdapter(){
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
@@ -167,18 +229,18 @@ public class catapult {
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Dragging Catapult");
                     if (isDragging) {
-                    Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-                    float maxDragDistance = 50f; // Maximum dragging distance
+                        Vector2 dragEnd = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+                        float maxDragDistance = 50f; // Maximum dragging distance
 
-                    float distance = dragStart.dst(dragEnd);
-                    if (distance > maxDragDistance) {
-                        dragEnd = dragStart.cpy().lerp(dragEnd, maxDragDistance / distance);
-                    }
+                        float distance = dragStart.dst(dragEnd);
+                        if (distance > maxDragDistance) {
+                            dragEnd = dragStart.cpy().lerp(dragEnd, maxDragDistance / distance);
+                        }
 
-                    controller.power = dragStart.dst(dragEnd) * 3; // Scale power
-                    controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
+                        controller.power = dragStart.dst(dragEnd) * 3; // Scale power
+                        controller.angle = dragEnd.sub(dragStart).angleDeg() - 180;
 
-                    projectilePosition.set(dragEnd.x, dragEnd.y);
+                        projectilePosition.set(dragEnd.x, dragEnd.y);
                     }
                     return true;}return false;
             }
@@ -187,23 +249,24 @@ public class catapult {
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Input area touch released!");
-                isDragging = false;
+                    isDragging = false;
 
-                projectileEquation.startVelocity.set(controller.power, 0f);
-                projectileEquation.startVelocity.setAngleDeg(controller.angle);
+                    projectileEquation.startVelocity.set(controller.power, 0f);
+                    projectileEquation.startVelocity.setAngleDeg(controller.angle);
 
-                Vector2 launchVelocity = new Vector2(controller.power, 0f);
-                launchVelocity.setAngleDeg(controller.angle);
+                    Vector2 launchVelocity = new Vector2(controller.power, 0f);
+                    launchVelocity.setAngleDeg(controller.angle);
 
-                projectileBody.setTransform((slingshotPosition.x+15) / PPM, (slingshotPosition.y +50)/ PPM, 0); // Reset position
-                projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
-                projectileBody.setActive(true); // Activate
-                projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
+                    projectileBody.setTransform((slingshotPosition.x+15) / PPM, (slingshotPosition.y +50)/ PPM, 0); // Reset position
+                    projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
+                    projectileBody.setActive(true); // Activate
+                    projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
 
-                return true;}
+                    return true;}
                 return false;
             }
-        });
+        };
+        return processor1;
     }
 
     public void render(float delta) {
