@@ -552,7 +552,7 @@ public class medLevel001 implements Screen {
 
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("TileMaps/level-updated.tmx");
+        map = mapLoader.load("TileMaps/mediumLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 
         // Map dimensions
@@ -681,7 +681,7 @@ public class medLevel001 implements Screen {
         fdef.restitution = 0.2f;
 
         body.createFixture(fdef);
-        kingpig king=new kingpig(body);
+        mediumgpig king=new mediumgpig(body);
         body.setUserData(king);
         pigBodies1.add(king);
         //pigBodies.add(body);

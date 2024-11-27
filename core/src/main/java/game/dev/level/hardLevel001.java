@@ -552,7 +552,7 @@ public class hardLevel001 implements Screen {
 
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("TileMaps/level-updated.tmx");
+        map = mapLoader.load("TileMaps/hardLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 
         // Map dimensions

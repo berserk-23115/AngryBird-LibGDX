@@ -21,7 +21,9 @@ public class pigs {
     public void setHealth(Integer health) {
         Health = health;
     }
-
+    public Body getbody(){
+        return body;
+    }
     public Texture getpigTexture(){
         return pigTexture;
     }

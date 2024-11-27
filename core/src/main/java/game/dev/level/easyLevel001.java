@@ -77,6 +77,39 @@ public class easyLevel001 implements Screen {
 
     private catapult slingshotGame;
 
+    static class BirdData{
+        private float posX;
+        private float posY;
+
+        private String type;
+        BirdData(bird b){
+            this.posX=b.getbody().getPosition().x;
+            this.posY=b.getbody().getPosition().y;
+            if(b instanceof red) this.type="red";
+            else if(b instanceof blue) this.type="blue";
+            else if(b instanceof chuck) this.type="chuck";
+
+        }
+    }
+    static class PigData{
+        private float posX;
+        private float posY;
+        private Integer health;
+
+
+        private String type;
+        PigData(pigs p){
+            this.posX=p.getbody().getPosition().x;
+            this.posY=p.getbody().getPosition().y;
+            if(p instanceof kingpig) this.type="red";
+            else if(p instanceof mediumgpig) this.type="blue";
+            else if(p instanceof smallpig) this.type="chuck";
+            this.health= p.getHealth();
+
+        }
+    }
+
+
     private InputProcessor createBackButton() {
         Rectangle inputArea = new Rectangle(10, 550, 50, 50);
         InputProcessor processor2 = new InputAdapter() {
@@ -681,7 +714,7 @@ public class easyLevel001 implements Screen {
         fdef.restitution = 0.2f;
 
         body.createFixture(fdef);
-        kingpig king=new kingpig(body);
+        smallpig king=new smallpig(body);
         body.setUserData(king);
         pigBodies1.add(king);
         //pigBodies.add(body);

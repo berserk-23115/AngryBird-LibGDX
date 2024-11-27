@@ -8,10 +8,7 @@ buildscript {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
-  dependencies {
 
-
-  }
 }
 
 allprojects {
@@ -48,6 +45,7 @@ configure(subprojects) {
     fileTree(assetsFolder).collect { assetsFolder.relativePath(it) }.sort().each {
       assetsFile.append(it + "\n")
     }
+
   }
   processResources.dependsOn 'generateAssetList'
 
@@ -71,3 +69,5 @@ subprojects {
 }
 
 eclipse.project.name = 'angrybirds' + '-parent'
+
+
