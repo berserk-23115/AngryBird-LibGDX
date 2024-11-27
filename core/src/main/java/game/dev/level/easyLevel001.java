@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class easyLevel001 implements Screen {
-    private final angryBirds game;
+    private angryBirds game;
     private OrthographicCamera gameCam;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private TiledMap map;

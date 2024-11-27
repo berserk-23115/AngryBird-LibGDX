@@ -742,7 +742,7 @@ public class medLevel001 implements Screen {
             game.setScreen(new winScreen(game));
         } else if (pigBodies1.size() > 0 && slingshotGame.getter()==1) {
             // Set to the Lose Screen
-            game.setScreen(new loseScreen(game));
+            game.setScreen(new loseScreenMedium(game));
         }
 
         tiledMapRenderer.render();
