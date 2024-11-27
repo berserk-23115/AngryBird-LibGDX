@@ -262,7 +262,7 @@ public int getter(){
         projectBodyClass=avBirdClass.get(indexC);
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
-        System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
+      //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
         // Assuming avBirdClass is an ArrayList or similar collection of birds
         float startX = 50/PPM; // Starting X position
         float startY = 100/PPM; // Starting Y position

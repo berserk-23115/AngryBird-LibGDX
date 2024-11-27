@@ -5,6 +5,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class smallpig extends pigs{
     public smallpig(Body body) {
-        super("Pigs/pig.png", 10,body);
+        super("Pigs/pig.png", 5,body);
     }
 }
