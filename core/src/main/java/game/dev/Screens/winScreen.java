@@ -57,6 +57,8 @@ public class winScreen  implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 clickSound.play();
+                game.setScreen(new LevelSelector(game));
+
                 // Add resume functionality here
             }
         });
@@ -67,6 +69,7 @@ public class winScreen  implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 clickSound.play();
+                game.setScreen(new LevelSelector(game));
                 // Add resume functionality here
             }
         });

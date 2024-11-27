@@ -43,13 +43,16 @@ public class catapult {
     private bird projectBodyClass;
     private Integer index=0;
     private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
+    private int bird=0;
 
 
     public static class Controller {
         public float power = 50f;
         public float angle = 0f;
     }
-
+public int getter(){
+        return bird;
+}
     public static class TrajectoryActor extends Actor {
         private Controller controller;
         private ProjectileEquation projectileEquation;
@@ -249,7 +252,7 @@ public class catapult {
 
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
-        if(index>=4){index=3;}
+        if(index==5){index=3;bird=1;}
 
 
         batch.begin();
@@ -264,23 +267,7 @@ public class catapult {
         float gap = 30/PPM;    // Gap between birds (adjust as needed)
 
 
-            // Validate index
-            if (index < 0 || index >= avBirdClass.size()) {
-                throw new ArrayIndexOutOfBoundsException("Invalid starting index: " + index);
-            }
-//        for (int i = 0; i < index; i++) {
-//            bird cur = avBirdClass.get(i); // Safe access
-//float floatX, floatY;
-//            for (ArrayList<Vector2> trajectory : thrownBirdPositions) {
-//                for (Vector2 point : trajectory) {
-//                    floatX = point.x * PPM;
-//                    floatY = point.y * PPM;
-//                    // Use the trajectory points as needed
-//            batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
-//                }
-//            }
-//            // Draw the bird
-   //     }
+
             // Loop through the list safely
             for (int i = index + 1; i < avBirdClass.size(); i++) {
                 bird cur = avBirdClass.get(i); // Safe access
@@ -305,12 +292,7 @@ public class catapult {
 
     }
 
-//    private void resetProjectile() {
-//        projectileBody.setType(BodyDef.BodyType.StaticBody); // Set back to Static
-//        projectileBody.setTransform((slingshotPosition.x+15 )/ PPM, (slingshotPosition.y +20)/ PPM, 0);
-//        projectileBody.setLinearVelocity(0, 0); // Clear velocity
-//        projectileBody.setActive(false);
-//    }
+
 
     public void dispose() {
         batch.dispose();

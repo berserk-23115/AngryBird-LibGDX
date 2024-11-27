@@ -14,15 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.dev.angryBirds;
 import game.dev.level.easyLevel001;
+import game.dev.level.medLevel001;
 
 import static com.sun.java.swing.ui.CommonUI.createButton;
 
-public class loseScreen  implements Screen {
+public class loseScreenMedium  implements Screen {
     private angryBirds game;
     private Stage stage;
     private Sound clickSound;
     private Texture winMenuTexture,  resetBtnTexture,menuBtnTexture;
-    public loseScreen(angryBirds game) {
+    public loseScreenMedium(angryBirds game) {
         this.game = game;
 
         // Load assets
@@ -49,7 +50,7 @@ public class loseScreen  implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 clickSound.play();
-                game.setScreen(new easyLevel001(game));
+                game.setScreen(new medLevel001(game));
                 // Add reset functionality here
             }
         });

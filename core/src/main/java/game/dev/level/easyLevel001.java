@@ -595,6 +595,8 @@ public class easyLevel001 implements Screen {
         initializeBodies();
 
         // Create slingshot
+        Body dummybirdyBody = world.createBody(new BodyDef());
+        availableBirds.add(dummybirdyBody);
         slingshotGame = new catapult(viewport, world, availableBirds,avBirdsClass);
 
 
@@ -738,7 +740,7 @@ deadBlocks.clear();
         if (pigBodies1.size() == 0 ) {
             // Set to the Win Screen
             game.setScreen(new winScreen(game));
-        } else if (pigBodies1.size() > 0 && blockBodies1.size() == 0) {
+        } else if (pigBodies1.size() > 0 && slingshotGame.getter()==1) {
             // Set to the Lose Screen
             game.setScreen(new loseScreen(game));
         }
