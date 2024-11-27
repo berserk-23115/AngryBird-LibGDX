@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="31">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="32">
  <tileset firstgid="1" source="background.tsx"/>
  <layer id="1" name="Background" width="30" height="19">
   <data encoding="csv">
@@ -30,6 +30,7 @@
   <object id="4" x="801.516" y="160.022" width="63.1668" height="64.5705"/>
   <object id="27" x="3.98804" y="0" width="959.123" height="5.98205"/>
   <object id="30" x="951.077" y="5.47645" width="7.30194" height="509.31"/>
+  <object id="31" x="3.7037" y="11.1111" width="7.40741" height="505.556"/>
  </objectgroup>
  <objectgroup id="3" name="Blocks">
   <object id="6" x="576.554" y="449.058" width="64.3123" height="64.3123"/>
