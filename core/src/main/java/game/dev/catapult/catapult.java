@@ -41,7 +41,7 @@ public class catapult {
     private ArrayList<bird> avBirdClass=new ArrayList<>();
     private ArrayList<Body> chidiyas = new ArrayList<>();
     private bird projectBodyClass;
-    private Integer index=0;
+    private Integer index=0,indexC=0;
     private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
     private int bird=0;
 
@@ -179,8 +179,8 @@ public int getter(){
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Touched Catapult");
-                    projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
                     projectileBody=chidiyas.get(index);
+                    projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
                     dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
                     return true;
@@ -237,7 +237,7 @@ public int getter(){
                     }
                     thrownBirdPositions.add(trajectoryPoints);
 
-                    if(index<4) {index++;}
+                    index++;
                     return true;}
                 return false;
             }
@@ -249,15 +249,17 @@ public int getter(){
 
     public void render(float delta) {
         world.step(1/60f, 6, 2);
-
+        indexC=index;
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
-        if(index==5){index=3;bird=1;}
+        if(index==5){index=3;bird=1;indexC=3;}
+        if(index==4){indexC=3;}
+
 
 
         batch.begin();
 
-        projectBodyClass=avBirdClass.get(index);
+        projectBodyClass=avBirdClass.get(indexC);
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
         System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
@@ -269,7 +271,7 @@ public int getter(){
 
 
             // Loop through the list safely
-            for (int i = index + 1; i < avBirdClass.size(); i++) {
+            for (int i = indexC + 1; i < avBirdClass.size(); i++) {
                 bird cur = avBirdClass.get(i); // Safe access
 
                 // Calculate positions

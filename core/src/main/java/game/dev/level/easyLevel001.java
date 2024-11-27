@@ -179,7 +179,7 @@ public class easyLevel001 implements Screen {
             FixtureDef projectileFixtureDef = new FixtureDef();
             projectileFixtureDef.shape = projectileShape;
             projectileFixtureDef.density = 1f;
-            projectileFixtureDef.friction = 0f;
+            projectileFixtureDef.friction = 0.2f;
             projectileFixtureDef.restitution = 0.3f;// Bounciness
 
 
@@ -190,6 +190,20 @@ public class easyLevel001 implements Screen {
 
 
         }
+
+        /// DUMMY BIRD --ADDED --->>>>>>
+        BodyDef birdkilulli = new BodyDef();
+        birdkilulli.type = BodyDef.BodyType.DynamicBody;
+        birdkilulli.active = false;
+        FixtureDef birdFixtureDef = new FixtureDef();
+        birdFixtureDef.density = 1f;
+        birdFixtureDef.friction = 0.2f;
+        birdFixtureDef.restitution = 0.3f;
+
+        Body birdBody = world.createBody(birdkilulli);
+        availableBirds.add(birdBody);
+
+
         for(int i =0;i<avBirdsClass.size();i++){
             System.out.println(avBirdsClass.get(i).getPower());
         }
@@ -595,8 +609,7 @@ public class easyLevel001 implements Screen {
         initializeBodies();
 
         // Create slingshot
-        Body dummybirdyBody = world.createBody(new BodyDef());
-        availableBirds.add(dummybirdyBody);
+
         slingshotGame = new catapult(viewport, world, availableBirds,avBirdsClass);
 
 

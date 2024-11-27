@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import game.dev.angryBirds;
 import game.dev.level.easyLevel001;
+import game.dev.level.hardLevel001;
+import game.dev.level.medLevel001;
 
 public class LevelSelector implements Screen {
     private angryBirds game;
@@ -157,7 +159,7 @@ public class LevelSelector implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play();
-                game.setScreen(new easyLevel001(game));
+                game.setScreen(new medLevel001(game));
             }
         });
 
@@ -165,7 +167,7 @@ public class LevelSelector implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play();
-                game.setScreen(new easyLevel001(game));
+                game.setScreen(new hardLevel001(game));
             }
         });
 
