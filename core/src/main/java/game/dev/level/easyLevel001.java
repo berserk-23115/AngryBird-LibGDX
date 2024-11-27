@@ -49,12 +49,14 @@ public class easyLevel001 implements Screen {
     private Music click, music;
 
     private SpriteBatch batch;
-    private ArrayList<Body> blockBodies,pigBodies;
+    private ArrayList<Body> blockBodies;
+
     private ArrayList<blocks> blockBodies1,deadBlocks;
-    private ArrayList<pigs> pigBodies1;
+    private ArrayList<pigs> pigBodies1 = new ArrayList<>();
     private ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     public ArrayList<Body> availableBirds = new ArrayList<>();
     public ArrayList<bird> avBirdsClass=new ArrayList<>();
+    public ArrayList<pigs> deadPigs=new ArrayList<>();
 
 
 
@@ -227,7 +229,7 @@ public class easyLevel001 implements Screen {
 
 
 
-                if((fixtureA.getBody().getUserData() instanceof blocks && fixtureB.getBody().getUserData() instanceof blue)||(fixtureA.getBody().getUserData() instanceof blue && fixtureB.getBody().getUserData() instanceof blocks)){
+                if((fixtureA.getBody().getUserData() instanceof blocks && fixtureB.getBody().getUserData() instanceof bird)||(fixtureA.getBody().getUserData() instanceof bird && fixtureB.getBody().getUserData() instanceof blocks)){
                     System.out.println("SAX SUX ..... ");
 
 
@@ -236,7 +238,7 @@ public class easyLevel001 implements Screen {
 
 
 
-                        blue currBird=(blue) fixtureB.getBody().getUserData();
+                        bird currBird=(bird) fixtureB.getBody().getUserData();
                         wood currWood= (wood) fixtureA.getBody().getUserData();
 
 
@@ -254,7 +256,7 @@ public class easyLevel001 implements Screen {
                         System.out.println("choosi");
 
 
-                        blue currBird=(blue) fixtureA.getBody().getUserData();
+                        bird currBird=(bird) fixtureA.getBody().getUserData();
                         wood currWood = (wood) fixtureB.getBody().getUserData();
 
 
@@ -278,7 +280,8 @@ public class easyLevel001 implements Screen {
 
                         currGlass.setHealth(currGlass.getHealth()-currBird.getPower());
                         if(currGlass.getHealth()<=0){
-                            world.destroyBody(fixtureA.getBody());}
+                            deadBlocks.add(currGlass);
+                            bodiesToDestroy.add(fixtureA.getBody());}
 
                     }
                     else if(fixtureB.getBody().getUserData() instanceof glass) {
@@ -291,7 +294,8 @@ public class easyLevel001 implements Screen {
 
                         currGlass.setHealth(currGlass.getHealth() - currBird.getPower());
                         if (currGlass.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            deadBlocks.add(currGlass);
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
                     if(fixtureA.getBody().getUserData() instanceof concrete){
@@ -303,7 +307,8 @@ public class easyLevel001 implements Screen {
 
                         currCon.setHealth(currCon.getHealth()-currBird.getPower());
                         if(currCon.getHealth()<=0){
-                            world.destroyBody(fixtureA.getBody());}
+                            deadBlocks.add(currCon);
+                            bodiesToDestroy.add(fixtureA.getBody());}
 
                     }
                     else if(fixtureB.getBody().getUserData() instanceof concrete){
@@ -315,7 +320,8 @@ public class easyLevel001 implements Screen {
 
                         currCon.setHealth(currCon.getHealth()-currBird.getPower());
                         if(currCon.getHealth()<=0){
-                            world.destroyBody(fixtureB.getBody());}
+                            deadBlocks.add(currCon);
+                            bodiesToDestroy.add(fixtureB.getBody());}
                     }
 
 
@@ -338,7 +344,7 @@ public class easyLevel001 implements Screen {
 
 
 
-                if((fixtureA.getBody().getUserData()=="Pigs" && fixtureB.getBody().getUserData()=="Bird")||(fixtureA.getBody().getUserData()=="Bird" && fixtureB.getBody().getUserData()=="Pigs")) {
+                if((fixtureA.getBody().getUserData() instanceof pigs && fixtureB.getBody().getUserData() instanceof bird)||(fixtureA.getBody().getUserData() instanceof bird&& fixtureB.getBody().getUserData() instanceof pigs)) {
                     System.out.println("SAX SUX ..... ");
 
 
@@ -350,7 +356,8 @@ public class easyLevel001 implements Screen {
 
                         currPig.setHealth(currPig.getHealth() - currBird.getPower());
                         if (currPig.getHealth() <= 0) {
-                            world.destroyBody(fixtureA.getBody());
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureA.getBody());
                         }
 
                     } else if (fixtureB.getBody().getUserData() instanceof smallpig) {
@@ -361,50 +368,54 @@ public class easyLevel001 implements Screen {
 
                         currPig.setHealth(currPig.getHealth() - currBird.getPower());
                         if (currPig.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
                     if (fixtureA.getBody().getUserData() instanceof mediumgpig) {
                         System.out.println("choosi");
 
                         bird currBird = (bird) fixtureB.getBody().getUserData();
-                        glass currGlass = (glass) fixtureA.getBody().getUserData();
+                        mediumgpig currPig = (mediumgpig) fixtureA.getBody().getUserData();
 
-                        currGlass.setHealth(currGlass.getHealth() - currBird.getPower());
-                        if (currGlass.getHealth() <= 0) {
-                            world.destroyBody(fixtureA.getBody());
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureA.getBody());
                         }
 
                     } else if (fixtureB.getBody().getUserData() instanceof mediumgpig) {
                         System.out.println("choosi");
 
-                        bird currBird = (bird) fixtureA.getBody().getUserData();
-                        glass currGlass = (glass) fixtureB.getBody().getUserData();
+                        bird currBird = (bird) fixtureB.getBody().getUserData();
+                        mediumgpig currPig = (mediumgpig) fixtureA.getBody().getUserData();
 
-                        currGlass.setHealth(currGlass.getHealth() - currBird.getPower());
-                        if (currGlass.getHealth() <= 0) {
-                            world.destroyBody(fixtureB.getBody());
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
                     if (fixtureA.getBody().getUserData() instanceof kingpig) {
                         System.out.println("choosi");
-
                         bird currBird = (bird) fixtureB.getBody().getUserData();
-                        concrete currCon = (concrete) fixtureA.getBody().getUserData();
+                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
 
-                        currCon.setHealth(currCon.getHealth() - currBird.getPower());
-                        if (currCon.getHealth() <= 0) {
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
                             bodiesToDestroy.add(fixtureA.getBody());
                         }
 
                     } else if (fixtureB.getBody().getUserData() instanceof kingpig) {
                         System.out.println("choosi");
 
-                        bird currBird = (bird) fixtureA.getBody().getUserData();
-                        concrete currCon = (concrete) fixtureB.getBody().getUserData();
+                        bird currBird = (bird) fixtureB.getBody().getUserData();
+                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
 
-                        currCon.setHealth(currCon.getHealth() - currBird.getPower());
-                        if (currCon.getHealth() <= 0) {
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
                             bodiesToDestroy.add(fixtureB.getBody());
                         }
                     }
@@ -577,7 +588,7 @@ public class easyLevel001 implements Screen {
         batch = new SpriteBatch();
         // blockBodies = new ArrayList<>();
         blockBodies1 = new ArrayList<>();
-        pigBodies1 = new ArrayList<>();
+       // pigBodies1 = new ArrayList<>();
         deadBlocks= new ArrayList<>();
 
         // Create static and dynamic bodies
@@ -700,6 +711,11 @@ public class easyLevel001 implements Screen {
         world.step(1 / 60f, 6, 2);
         gameCam.update();
         tiledMapRenderer.setView(gameCam);
+        for(pigs b: deadPigs){
+            pigBodies1.remove(b);
+            b.dispose();
+        }
+        deadPigs.clear();
         for(blocks b: deadBlocks){
             blockBodies1.remove(b);
             b.dispose();
@@ -719,7 +735,7 @@ deadBlocks.clear();
 
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (pigBodies1.size() == 0 && blockBodies1.size() > 0) {
+        if (pigBodies1.size() == 0 ) {
             // Set to the Win Screen
             game.setScreen(new winScreen(game));
         } else if (pigBodies1.size() > 0 && blockBodies1.size() == 0) {
@@ -735,7 +751,6 @@ deadBlocks.clear();
         batch.begin();
         for(blocks b : blockBodies1){
             batch.draw(b.getBlockTexture(), b.getBody().getPosition().x-30/ PPM, b.getBody().getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
-
         }
         batch.draw(backBtnTexture,10 / PPM, 550 / PPM,48/PPM,48/PPM);
         batch.draw(saveBtnTexture,70 / PPM, 550 / PPM,105/PPM,48/PPM);

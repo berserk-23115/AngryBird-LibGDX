@@ -28,4 +28,7 @@ public class pigs {
     public Body getBody() {
         return body;
     }
+    public void dispose(){
+        pigTexture.dispose();
+    }
 }

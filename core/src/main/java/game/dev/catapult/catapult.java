@@ -42,6 +42,7 @@ public class catapult {
     private ArrayList<Body> chidiyas = new ArrayList<>();
     private bird projectBodyClass;
     private Integer index=0;
+    private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
 
 
     public static class Controller {
@@ -122,7 +123,6 @@ public class catapult {
         projectileEquation.gravity = -9.8f;
         projectileBody= chidiyas.get(index);
         projectBodyClass=avBirdClass.get(index);
-        projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
 
         // Define the projectile body
 
@@ -176,6 +176,8 @@ public class catapult {
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Touched Catapult");
+                    projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
+                    projectileBody=chidiyas.get(index);
                     dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
                     return true;
@@ -221,11 +223,24 @@ public class catapult {
                     projectileBody.setType(BodyDef.BodyType.DynamicBody); // Set to Dynamic
                     projectileBody.setActive(true); // Activate
                     projectileBody.setLinearVelocity(launchVelocity.scl(10 / PPM));
-                    if(index<4) {index++;;}
+                    ArrayList<Vector2> trajectoryPoints = new ArrayList<>();
+                    float t = 0f;
+                    while (true) {
+                        float x = (projectileEquation.getX(t) + slingshotPosition.x + 15) / PPM;
+                        float y = (projectileEquation.getY(t) + slingshotPosition.y + 20) / PPM;
+                        if (y < 0) break; // Stop if trajectory goes below ground level
+                        trajectoryPoints.add(new Vector2(x, y));
+                        t += 0.1f; // Adjust time step as needed
+                    }
+                    thrownBirdPositions.add(trajectoryPoints);
+
+                    if(index<4) {index++;}
                     return true;}
                 return false;
             }
+
         };
+
         return processor1;
     }
 
@@ -234,11 +249,11 @@ public class catapult {
 
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
-
+        if(index>=4){index=3;}
 
 
         batch.begin();
-        projectileBody=chidiyas.get(index);
+
         projectBodyClass=avBirdClass.get(index);
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
@@ -248,12 +263,24 @@ public class catapult {
         float startY = 100/PPM; // Starting Y position
         float gap = 30/PPM;    // Gap between birds (adjust as needed)
 
-        try {
+
             // Validate index
             if (index < 0 || index >= avBirdClass.size()) {
                 throw new ArrayIndexOutOfBoundsException("Invalid starting index: " + index);
             }
-
+//        for (int i = 0; i < index; i++) {
+//            bird cur = avBirdClass.get(i); // Safe access
+//float floatX, floatY;
+//            for (ArrayList<Vector2> trajectory : thrownBirdPositions) {
+//                for (Vector2 point : trajectory) {
+//                    floatX = point.x * PPM;
+//                    floatY = point.y * PPM;
+//                    // Use the trajectory points as needed
+//            batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
+//                }
+//            }
+//            // Draw the bird
+   //     }
             // Loop through the list safely
             for (int i = index + 1; i < avBirdClass.size(); i++) {
                 bird cur = avBirdClass.get(i); // Safe access
@@ -265,16 +292,6 @@ public class catapult {
                 // Draw the bird
                 batch.draw(cur.getBirdTexture(), floatX, floatY, 30, 30);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-
-
         batch.end();
 
 
