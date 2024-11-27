@@ -27,7 +27,6 @@
  </layer>
  <objectgroup id="2" name="Ground">
   <object id="1" x="0" y="512.402" width="961.348" height="95.183"/>
-  <object id="12" x="1040.31" y="336.705"/>
   <object id="20" x="0" y="1.59974" width="4.79923" height="508.719"/>
   <object id="21" x="0" y="1.59974" width="945.449" height="7.99872"/>
  </objectgroup>
