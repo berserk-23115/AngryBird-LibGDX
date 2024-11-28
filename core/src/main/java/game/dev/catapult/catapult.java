@@ -44,6 +44,8 @@ public class catapult {
    // private Integer index=0,indexC=0;
     private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
     private int Boolbird=0;
+    boolean released=false;
+    private long releasedTime=0;
 
 
     public static class Controller {
@@ -157,9 +159,7 @@ public int getter(){
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Touched Catapult");
-                    projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
-                    projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
-                    dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
+                dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
                     return true;
                 }
@@ -213,10 +213,11 @@ public int getter(){
                         trajectoryPoints.add(new Vector2(x, y));
                         t += 0.1f; // Adjust time step as needed
                     }
-                    thrownBirdPositions.add(trajectoryPoints);
+                    releasedTime=System.currentTimeMillis();
+                    released=true;
 
-                    avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
-                    return true;}
+
+                  return true;}
                 return false;
             }
 
@@ -240,6 +241,15 @@ public int getter(){
         projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
+        long currentTime=System.currentTimeMillis();
+        if(released && currentTime-releasedTime>3000){
+            avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
+            projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
+            projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
+            projectileBody.setActive(false);
+            released=false;
+        }
+        if(avBirdClass.get(0).getIndex()==4){Boolbird=1;}
       //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
         // Assuming avBirdClass is an ArrayList or similar collection of birds
         float startX = 50/PPM; // Starting X position
