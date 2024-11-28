@@ -19,34 +19,31 @@ import game.dev.birds.bird;
 import game.dev.birds.blue;
 import org.checkerframework.checker.units.qual.A;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class catapult implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private transient World world;
-    private transient SpriteBatch batch;
-    private transient OrthographicCamera camera;
+public class catapult {
+    private World world;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
     private transient Texture slingshotTexture, projectileTexture, trajectoryPointTexture;
     private ProjectileEquation projectileEquation;
-    private transient Vector2 slingshotPosition;
-    private transient Vector2 projectilePosition;
+    private Vector2 slingshotPosition;
+    private Vector2 projectilePosition;
     private Controller controller;
-    private transient TrajectoryActor trajectoryActor;
-    private transient boolean isDragging;
-    private transient Vector2 dragStart;
-    private transient float timeElapsed;
-    private transient Stage stage;
-    private transient Box2DDebugRenderer debugRenderer; // Debug renderer
+    private TrajectoryActor trajectoryActor;
+    private boolean isDragging;
+    private Vector2 dragStart;
+    private float timeElapsed;
+    private Stage stage;
+    private Box2DDebugRenderer debugRenderer; // Debug renderer
     public static final float PPM = 100f;
-    transient Body projectileBody;
-    private transient ArrayList<bird> avBirdClass=new ArrayList<>();
-    private transient ArrayList<Body> chidiyas = new ArrayList<>();
-    private transient bird projectBodyClass;
-    private long release_time=0;
+    Body projectileBody;
+    private ArrayList<bird> avBirdClass=new ArrayList<>();
+    private ArrayList<Body> chidiyas = new ArrayList<>();
+    private bird projectBodyClass;
    // private Integer index=0,indexC=0;
-   private int Boolbird=0;
-   boolean released=false;
+    private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
+    private int Boolbird=0;
 
 
     public static class Controller {
@@ -160,7 +157,7 @@ public int getter(){
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Touched Catapult");
-
+                    projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
                     projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
                     dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
@@ -216,10 +213,9 @@ public int getter(){
                         trajectoryPoints.add(new Vector2(x, y));
                         t += 0.1f; // Adjust time step as needed
                     }
-                    release_time=System.currentTimeMillis();
-                    released=true;
+                    thrownBirdPositions.add(trajectoryPoints);
 
-
+                    avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
                     return true;}
                 return false;
             }
@@ -240,26 +236,11 @@ public int getter(){
 
 
         batch.begin();
-        batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
+
         projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
-
+        batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
-
-        long delay=System.currentTimeMillis()-release_time;
-        if(released&&delay>2000){
-            avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
-            projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
-            projectilePosition.set(slingshotPosition.x+15, slingshotPosition.y+20);
-          released=false;
-
-        }
-        if(avBirdClass.get(0).getIndex()==4){Boolbird=1;}
-
-//        projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
-//
-//        batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
-//        batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
-//      //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
+      //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
         // Assuming avBirdClass is an ArrayList or similar collection of birds
         float startX = 50/PPM; // Starting X position
         float startY = 100/PPM; // Starting Y position
