@@ -127,6 +127,7 @@ public int getter(){
         projectileEquation = new ProjectileEquation();
         projectileEquation.gravity = -9.8f;
         projectileBody= chidiyas.get(avBirdClass.get(0).getIndex());
+        projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
         projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
 
 
