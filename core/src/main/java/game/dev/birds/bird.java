@@ -10,12 +10,14 @@ public class bird implements Serializable {
 
     private transient Texture birdTexture;
     private Integer power;
-    private Body body;
+    private transient Body body;
     int index=0,indexC=0;
-    public bird(String blockTexture, Integer Health, Body body) {
+    private String type;
+    public bird(String blockTexture, Integer Health, Body body, String type) {
         this.birdTexture = new Texture(blockTexture);
         this.power = Health;
         this.body=body;
+        this.type =type;
     }
     public Texture getBirdTexture() {
         return birdTexture;
@@ -41,5 +43,27 @@ public class bird implements Serializable {
     }
     public int getIndexC(){
         return indexC;
+    }
+
+    public void reloadTexture() {
+        if (birdTexture == null) {
+            switch (type.toLowerCase()) {
+                case "red":
+                    birdTexture = new Texture("birds/red.png");
+                    break;
+                case "blue":
+                    birdTexture = new Texture("birds/blue.png");
+                    break;
+                case "chuck":
+                    birdTexture = new Texture("birds/chuck.png");
+                    break;
+                default:
+                    birdTexture = new Texture("birds/default.png");
+                    break;
+            }
+        }
+    }
+    public void relodBodyPosition(float x, float y){
+        body.setTransform(x,y,0);
     }
 }

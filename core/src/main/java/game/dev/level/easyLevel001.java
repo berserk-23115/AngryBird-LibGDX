@@ -45,26 +45,26 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.Serializable;
 
-public class easyLevel001 implements Screen,Serializable {
+public class easyLevel001 implements Screen {
     private angryBirds game;
     private static final long serialVersionUID = 1L;
 
-    private OrthographicCamera gameCam;
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private TiledMap map;
-    private Viewport viewport;
-    private Stage stage;
-    private Music click, music;
+    private transient OrthographicCamera gameCam;
+    private transient OrthogonalTiledMapRenderer tiledMapRenderer;
+    private transient TiledMap map;
+    private transient Viewport viewport;
+    private transient Stage stage;
+    private transient Music click, music;
 
-    private SpriteBatch batch;
+    private transient SpriteBatch batch;
     //private ArrayList<Body> blockBodies;
 
-    private ArrayList<blocks> blockBodies1=new ArrayList<>(),deadBlocks= new ArrayList<>();
-    private ArrayList<pigs> pigBodies1 = new ArrayList<>();
-    private ArrayList<Body> bodiesToDestroy = new ArrayList<>();
-    public ArrayList<Body> availableBirds = new ArrayList<>();
-    public ArrayList<bird> avBirdsClass=new ArrayList<>();
-    public ArrayList<pigs> deadPigs=new ArrayList<>();
+    private transient ArrayList<blocks> blockBodies1=new ArrayList<>(),deadBlocks= new ArrayList<>();
+    private transient ArrayList<pigs> pigBodies1 = new ArrayList<>();
+    private transient ArrayList<Body> bodiesToDestroy = new ArrayList<>();
+    public transient ArrayList<Body> availableBirds = new ArrayList<>();
+    public transient ArrayList<bird> avBirdsClass=new ArrayList<>();
+    public transient ArrayList<pigs> deadPigs=new ArrayList<>();
 
 
 
@@ -74,8 +74,8 @@ public class easyLevel001 implements Screen,Serializable {
 
 
     public static final float PPM = 100f;
-    private World world;
-    private Box2DDebugRenderer b2dr;
+    private transient World world;
+    private transient Box2DDebugRenderer b2dr;
 
     private transient Texture woodBlockTexture,pigBlockTexture;
     private transient Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
@@ -83,7 +83,7 @@ public class easyLevel001 implements Screen,Serializable {
     private int mapWidth;
     private int mapHeight;
 
-    private catapult slingshotGame;
+    private transient catapult slingshotGame;
     private saveGame save;
 
 

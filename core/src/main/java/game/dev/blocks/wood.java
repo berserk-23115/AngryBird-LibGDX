@@ -8,7 +8,7 @@ private Body body;
 
     public wood(Body body){
 
-        super("Blocks/WoodBlock.png", 12, body);
+        super("Blocks/WoodBlock.png", 12, body,"wood");
         this.body = body;
 
 

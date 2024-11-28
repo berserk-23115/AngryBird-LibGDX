@@ -7,7 +7,7 @@ public class glass extends blocks{
     private Texture blockTexture;
     private Body body;
     public glass(Body body){
-        super("Blocks/GlassBlock.png", 5,body);
+        super("Blocks/GlassBlock.png", 5,body,"glass");
     }
     public Texture getBlockTexture(){
         return blockTexture;

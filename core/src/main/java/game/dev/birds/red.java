@@ -8,7 +8,7 @@ public class red extends bird{
 
     public red(Body body){
 
-        super("Birds/red.png", 15, body);
+        super("Birds/red.png", 15, body,"red");
         this.body = body;
 
 
