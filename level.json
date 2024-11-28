@@ -1,0 +1,106 @@
+{
+  "blocks": [
+    {
+      "type": "wood",
+      "x": 7.6738777,
+      "y": 1.2861729,
+      "width": 60.0,
+      "height": 60.0,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.323396,
+      "y": 1.2718786,
+      "width": 60.0,
+      "height": 60.0,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.977099,
+      "y": 1.3060632,
+      "width": 60.0,
+      "height": 60.0,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 7.4555635,
+      "y": 1.929292,
+      "width": 60.0,
+      "height": 60.0,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.327344,
+      "y": 1.9136581,
+      "width": 60.0,
+      "height": 60.0,
+      "health": 12
+    }
+  ],
+  "pigs": [
+    {
+      "x": 7.56075,
+      "y": 2.5782223,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0
+    },
+    {
+      "x": 8.337016,
+      "y": 2.548352,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0
+    },
+    {
+      "x": 9.007675,
+      "y": 1.9544717,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0
+    }
+  ],
+  "bird": [
+    {
+      "type": "chuck",
+      "x": 1.3186928,
+      "y": 1.06098,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 9
+    },
+    {
+      "type": "blue",
+      "x": 0.75,
+      "y": 1.45,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 8
+    },
+    {
+      "type": "chuck",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 9
+    },
+    {
+      "type": "blue",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 8
+    }
+  ],
+  "level": 1,
+  "index": 1
+}

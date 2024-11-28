@@ -15,8 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import game.dev.Serialise.LevelData;
+import game.dev.Serialise.LevelDeserializer;
 import game.dev.angryBirds;
 import game.dev.level.easyLevel001;
+import game.dev.level.hardLevel001;
+import game.dev.level.medLevel001;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -125,15 +129,18 @@ public class MainScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play(); // Play click sound
+                // Load the saved game
+                LevelData loadedLevel = LevelDeserializer.loadLevel("level.json");
+                if(loadedLevel.getLevel()==1){
+                    game.setScreen(new easyLevel001(game, loadedLevel));
+                }
+//                else if (loadedLevel.getLevel()==2){ {
+//                    game.setScreen(new medLevel001(game, loadedLevel));
+//                }
+//                } else if (loadedLevel.getLevel()==3){
+//                    game.setScreen(new hardLevel001(game, loadedLevel));
+//                }
 
-//                if(save.getLevelType()==1){
-//                    easyLevel001 inGameScreen = new easyLevel001(game, savedGame);
-//
-//                    game.setScreen(inGameScreen);}
-//                if(save.getLevelType()==2){
-//                    easyLevel001 inGameScreen = new easyLevel001(game, savedGame);
-//
-//                    game.setScreen(inGameScreen);}
 
                 System.out.println("Load Game Button Clicked");
             }

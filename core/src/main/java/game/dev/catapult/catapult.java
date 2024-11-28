@@ -41,9 +41,7 @@ public class catapult {
     private ArrayList<bird> avBirdClass=new ArrayList<>();
     private ArrayList<Body> chidiyas = new ArrayList<>();
     private bird projectBodyClass;
-   // private Integer index=0,indexC=0;
-    private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
-    private int Boolbird=0;
+   private int Boolbird=0;
     boolean released=false;
     private long releasedTime=0;
 
