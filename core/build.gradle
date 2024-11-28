@@ -14,6 +14,7 @@ dependencies {
   api "org.apache.fury:fury-core:$furyVersion"
 
 
+
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }

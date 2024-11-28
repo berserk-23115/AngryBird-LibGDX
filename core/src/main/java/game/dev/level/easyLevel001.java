@@ -6,6 +6,7 @@ import game.dev.birds.blue;
 import game.dev.birds.chuck;
 import game.dev.birds.red;
 import game.dev.blocks.blocks;
+import game.dev.Serialise.saveGame;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
@@ -36,11 +37,18 @@ import game.dev.pigs.mediumgpig;
 import game.dev.pigs.pigs;
 import game.dev.pigs.smallpig;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.Serializable;
 
-public class easyLevel001 implements Screen {
+public class easyLevel001 implements Screen,Serializable {
     private angryBirds game;
+    private static final long serialVersionUID = 1L;
+
     private OrthographicCamera gameCam;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private TiledMap map;
@@ -49,14 +57,14 @@ public class easyLevel001 implements Screen {
     private Music click, music;
 
     private SpriteBatch batch;
-    private ArrayList<Body> blockBodies;
+    //private ArrayList<Body> blockBodies;
 
-    private ArrayList<blocks> blockBodies1,deadBlocks;
+    private ArrayList<blocks> blockBodies1=new ArrayList<>(),deadBlocks= new ArrayList<>();
     private ArrayList<pigs> pigBodies1 = new ArrayList<>();
     private ArrayList<Body> bodiesToDestroy = new ArrayList<>();
     public ArrayList<Body> availableBirds = new ArrayList<>();
     public ArrayList<bird> avBirdsClass=new ArrayList<>();
-    public ArrayList<pigs> deadPigs;
+    public ArrayList<pigs> deadPigs=new ArrayList<>();
 
 
 
@@ -69,45 +77,16 @@ public class easyLevel001 implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
 
-    private Texture woodBlockTexture,pigBlockTexture;
-    private Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
+    private transient Texture woodBlockTexture,pigBlockTexture;
+    private transient Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
 
     private int mapWidth;
     private int mapHeight;
 
     private catapult slingshotGame;
-
-    static class BirdData{
-        private float posX;
-        private float posY;
-
-        private String type;
-        BirdData(bird b){
-            this.posX=b.getbody().getPosition().x;
-            this.posY=b.getbody().getPosition().y;
-            if(b instanceof red) this.type="red";
-            else if(b instanceof blue) this.type="blue";
-            else if(b instanceof chuck) this.type="chuck";
-
-        }
-    }
-    static class PigData{
-        private float posX;
-        private float posY;
-        private Integer health;
+    private saveGame save;
 
 
-        private String type;
-        PigData(pigs p){
-            this.posX=p.getbody().getPosition().x;
-            this.posY=p.getbody().getPosition().y;
-            if(p instanceof kingpig) this.type="red";
-            else if(p instanceof mediumgpig) this.type="blue";
-            else if(p instanceof smallpig) this.type="chuck";
-            this.health= p.getHealth();
-
-        }
-    }
 
 
     private InputProcessor createBackButton() {
@@ -132,6 +111,8 @@ public class easyLevel001 implements Screen {
         //  stage.addActor(backBtn);
         return processor2;
     }
+
+    //SAVE BUTTON
     private InputProcessor createSaveBtn() {
         Rectangle inputArea = new Rectangle(70, 550, 105, 45);
         InputProcessor processor2 = new InputAdapter() {
@@ -146,6 +127,25 @@ public class easyLevel001 implements Screen {
                     System.out.println("Button Clicked");
                     click.play(); // Play the click sound
                      // Switch to the main screen
+
+                    try (FileOutputStream fileOut = new FileOutputStream("game_sava.ser");
+                         ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+                        saveGame save = new saveGame(blockBodies1, pigBodies1, avBirdsClass,0);
+
+                        out.writeObject(save);
+
+                        System.out.println("Game saved successfully to " + "game_sava.ser");
+                    } catch (IOException e) {
+                        System.err.println("Error saving game: " + e.getMessage());
+                    }
+                    game.setScreen(new MainScreen(game));
+
+
+
+
+
+
+
                     return true; // Event handled
                 }
                 return false; // Event not handled
@@ -598,10 +598,6 @@ public class easyLevel001 implements Screen {
         // Initialize batch and blocks
         batch = new SpriteBatch();
 
-        blockBodies1 = new ArrayList<>();
-        deadPigs=new ArrayList<>();
-
-        deadBlocks= new ArrayList<>();
 
         // Create static and dynamic bodies
         initializeBodies();
@@ -625,6 +621,378 @@ public class easyLevel001 implements Screen {
         multiplexer.addProcessor(createReloadBtn());
 
         Gdx.input.setInputProcessor(multiplexer);
+
+    }
+
+    public easyLevel001(angryBirds game, saveGame save){
+        this.game = game;
+
+        // Initialize camera and viewport
+        gameCam = new OrthographicCamera();
+        viewport = new FitViewport(960 / PPM, 608 / PPM, gameCam);
+        world = new World(new Vector2(0, -9.81f), true);
+
+        this.avBirdsClass=save.getBirds();
+        this.availableBirds=save.getBirdBody();
+        this.pigBodies1=save.getPigs();
+        this.blockBodies1=save.getBlocks();
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+
+
+
+
+
+
+
+
+                //----------------------- BIRD n BLOCK---------------
+
+
+
+                if((fixtureA.getBody().getUserData() instanceof blocks && fixtureB.getBody().getUserData() instanceof bird)||(fixtureA.getBody().getUserData() instanceof bird && fixtureB.getBody().getUserData() instanceof blocks)){
+                    System.out.println("SAX SUX ..... ");
+
+
+                    if(fixtureA.getBody().getUserData() instanceof wood){
+                        System.out.println("choosi");
+
+
+
+                        bird currBird=(bird) fixtureB.getBody().getUserData();
+                        wood currWood= (wood) fixtureA.getBody().getUserData();
+
+
+
+
+                        currWood.setHealth(currWood.getHealth()-currBird.getPower());
+                        if(currWood.getHealth()<=0){
+                            deadBlocks.add(currWood);
+                            bodiesToDestroy.add(fixtureA.getBody());
+
+                        }
+
+                    }
+                    else if(fixtureB.getBody().getUserData() instanceof wood) {
+                        System.out.println("choosi");
+
+
+                        bird currBird=(bird) fixtureA.getBody().getUserData();
+                        wood currWood = (wood) fixtureB.getBody().getUserData();
+
+
+
+
+                        currWood.setHealth(currWood.getHealth() - currBird.getPower());
+                        if (currWood.getHealth() <= 0) {
+                            deadBlocks.add(currWood);
+                            bodiesToDestroy.add(fixtureB.getBody());
+                        }
+                    }
+                    if(fixtureA.getBody().getUserData() instanceof glass){
+                        System.out.println("choosi");
+
+
+                        bird currBird=(bird) fixtureB.getBody().getUserData();
+                        glass currGlass=(glass) fixtureA.getBody().getUserData();
+
+
+
+
+                        currGlass.setHealth(currGlass.getHealth()-currBird.getPower());
+                        if(currGlass.getHealth()<=0){
+                            deadBlocks.add(currGlass);
+                            bodiesToDestroy.add(fixtureA.getBody());}
+
+                    }
+                    else if(fixtureB.getBody().getUserData() instanceof glass) {
+                        System.out.println("choosi");
+
+                        bird currBird=(bird) fixtureA.getBody().getUserData();
+                        glass currGlass = (glass) fixtureB.getBody().getUserData();
+
+
+
+                        currGlass.setHealth(currGlass.getHealth() - currBird.getPower());
+                        if (currGlass.getHealth() <= 0) {
+                            deadBlocks.add(currGlass);
+                            bodiesToDestroy.add(fixtureB.getBody());
+                        }
+                    }
+                    if(fixtureA.getBody().getUserData() instanceof concrete){
+                        System.out.println("choosi");
+
+                        bird currBird=(bird) fixtureB.getBody().getUserData();
+                        concrete currCon=(concrete) fixtureA.getBody().getUserData();
+
+
+                        currCon.setHealth(currCon.getHealth()-currBird.getPower());
+                        if(currCon.getHealth()<=0){
+                            deadBlocks.add(currCon);
+                            bodiesToDestroy.add(fixtureA.getBody());}
+
+                    }
+                    else if(fixtureB.getBody().getUserData() instanceof concrete){
+                        System.out.println("choosi");
+
+                        bird currBird=(bird) fixtureA.getBody().getUserData();
+                        concrete currCon=(concrete) fixtureB.getBody().getUserData();
+
+
+                        currCon.setHealth(currCon.getHealth()-currBird.getPower());
+                        if(currCon.getHealth()<=0){
+                            deadBlocks.add(currCon);
+                            bodiesToDestroy.add(fixtureB.getBody());}
+                    }
+
+
+                    /// BlockHealth --- , if BlockHealth == 0 then destroy block
+                }
+
+
+
+
+
+
+
+
+
+                //----------------------- PIG n BIRD---------------
+
+
+
+
+
+
+
+                if((fixtureA.getBody().getUserData() instanceof pigs && fixtureB.getBody().getUserData() instanceof bird)||(fixtureA.getBody().getUserData() instanceof bird&& fixtureB.getBody().getUserData() instanceof pigs)) {
+                    System.out.println("SAX SUX .....1 ");
+
+
+                    if (fixtureA.getBody().getUserData() instanceof smallpig) {
+                        System.out.println("choosi");
+
+                        bird currBird = (bird) fixtureB.getBody().getUserData();
+                        smallpig currPig = (smallpig) fixtureA.getBody().getUserData();
+
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureA.getBody());
+                        }
+
+                    } else if (fixtureB.getBody().getUserData() instanceof smallpig) {
+                        System.out.println("choosi");
+
+                        bird currBird = (bird) fixtureA.getBody().getUserData();
+                        smallpig currPig = (smallpig) fixtureB.getBody().getUserData();
+
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureB.getBody());
+                        }
+                    }
+                    if (fixtureA.getBody().getUserData() instanceof mediumgpig) {
+                        System.out.println("choosi");
+
+                        bird currBird = (bird) fixtureB.getBody().getUserData();
+                        mediumgpig currPig = (mediumgpig) fixtureA.getBody().getUserData();
+
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureA.getBody());
+                        }
+
+                    } else if (fixtureB.getBody().getUserData() instanceof mediumgpig) {
+                        System.out.println("choosi");
+
+                        bird currBird = (bird) fixtureB.getBody().getUserData();
+                        mediumgpig currPig = (mediumgpig) fixtureA.getBody().getUserData();
+
+                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+                        if (currPig.getHealth() <= 0) {
+                            deadPigs.add(currPig);
+                            bodiesToDestroy.add(fixtureB.getBody());
+                        }
+                    }
+
+                    if(fixtureA.getBody().getUserData() instanceof kingpig){
+                        System.out.println("choosi1");
+
+
+
+                        bird currBird=(bird) fixtureB.getBody().getUserData();
+                        pigs currWood= (pigs) fixtureA.getBody().getUserData();
+
+
+
+
+                        currWood.setHealth(currWood.getHealth()-currBird.getPower());
+                        if(currWood.getHealth()<=0){
+                            System.out.println("yes");
+                            if (currWood instanceof pigs) {
+                                System.out.println("currPig is an instance of pigs.");
+                                deadPigs.add(currWood);
+                            } else {
+                                System.out.println("currPig is not a valid pigs instance.");
+                            }
+                            //  deadPigs.add(currWood);
+                            bodiesToDestroy.add(fixtureA.getBody());
+
+                        }
+
+                    }
+                    else if(fixtureB.getBody().getUserData() instanceof kingpig) {
+                        System.out.println("choosi");
+
+
+                        bird currBird=(bird) fixtureA.getBody().getUserData();
+                        pigs currWood = (pigs) fixtureB.getBody().getUserData();
+
+
+
+
+                        currWood.setHealth(currWood.getHealth() - currBird.getPower());
+                        if (currWood.getHealth() <= 0) {
+
+                            if (currWood instanceof pigs) {
+                                System.out.println("currPig is an instance of pigs.");
+                                deadPigs.add(currWood);
+                            } else {
+                                System.out.println("currPig is not a valid pigs instance.");
+                            }
+
+                            bodiesToDestroy.add(fixtureB.getBody());
+                        }
+                    }
+
+
+
+
+
+
+
+//
+//
+//                    if (fixtureA.getBody().getUserData() instanceof kingpig) {
+//                        System.out.println("choosi");
+//                        bird currBird = (bird) fixtureB.getBody().getUserData();
+//                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
+//
+//                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+//                        if (currPig.getHealth() <= 0) {
+//                            deadPigs.add(currPig);
+//                            bodiesToDestroy.add(fixtureA.getBody());
+//                        }
+//
+//                    } else if (fixtureB.getBody().getUserData() instanceof kingpig) {
+//                        System.out.println("choosi");
+//
+//                        bird currBird = (bird) fixtureB.getBody().getUserData();
+//                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
+//
+//                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
+//                        if (currPig.getHealth() <= 0) {
+//
+//                            if (currPig instanceof pigs) {
+//                                System.out.println("currPig is an instance of pigs.");
+//                                deadPigs.add(currPig);
+//                            } else {
+//                                System.out.println("currPig is not a valid pigs instance.");
+//                            }
+//                            deadPigs.add(currPig);
+//                            for(pigs p: deadPigs){
+//                                System.out.println("pigs entered:- "+p);
+//                            }
+//                            bodiesToDestroy.add(fixtureB.getBody());
+//                        }
+//                    }
+
+
+                }
+
+
+
+
+
+
+                //----------------------- PIG n BLOCK---------------
+
+
+
+            }
+
+
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
+        // Load assets
+        click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/game.wav"));
+        woodBlockTexture = new Texture("TileMaps/BLOCK_WOOD_4X4_2.png");
+        backBtnTexture = new Texture("LevelScreen/backBtn.png");
+        pigBlockTexture = new Texture("Pigs/kingping.png");
+        saveBtnTexture = new Texture("pauseMenu/saveBtn.png");
+        reloadBtnTexture = new Texture("pauseMenu/reset.png");
+
+        // Initialize stage and map
+
+        // Use InputMultiplexer for handling multiple input processors
+        stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
+
+
+        TmxMapLoader mapLoader = new TmxMapLoader();
+        map = mapLoader.load("TileMaps/level-updated.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
+
+        // Map dimensions
+        mapWidth = map.getProperties().get("width", Integer.class) * map.getProperties().get("tilewidth", Integer.class);
+        mapHeight = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
+
+        // Initialize Box2D world
+        b2dr = new Box2DDebugRenderer();
+
+        // Initialize batch and blocks
+        batch = new SpriteBatch();
+
+        slingshotGame = new catapult(viewport, world, availableBirds,avBirdsClass);
+
+
+
+        // Set camera position
+        gameCam.position.set(mapWidth / 2f / PPM, mapHeight / 2f / PPM, 0);
+        gameCam.update();
+        stage = new Stage(viewport);
+
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(slingshotGame.getInputProcessor());
+        multiplexer.addProcessor(createBackButton());
+        multiplexer.addProcessor(createSaveBtn());
+        multiplexer.addProcessor(createReloadBtn());
+
+        Gdx.input.setInputProcessor(multiplexer);
+
+
 
     }
 

@@ -3,8 +3,12 @@ package game.dev.pigs;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class pigs {
-    private Texture pigTexture;
+import java.io.Serializable;
+
+public class pigs implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private transient Texture pigTexture;
     private Integer Health;
     private Body body;
     // public static ArrayList<Body> blockbodies1;

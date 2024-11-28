@@ -14,7 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import game.dev.Serialise.saveGame;
 import game.dev.angryBirds;
+import game.dev.level.easyLevel001;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class MainScreen implements Screen {
     private angryBirds game;
@@ -23,6 +29,7 @@ public class MainScreen implements Screen {
     private Music click, music;
     private Stage stage;
     private Texture logo;
+    private saveGame savedGame;
 
     // Buttons
     private Texture exitButton, musicOnButton, musicOffButton, newGameButton, loadGameButton;
@@ -118,8 +125,32 @@ public class MainScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play(); // Play click sound
+                saveGame save = null;
+                try {
+                    FileInputStream fis = new FileInputStream("save.ser");
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+                    savedGame = (saveGame) ois.readObject();
+                }
+                catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if(save.getLevelType()==0){
+                easyLevel001 inGameScreen = new easyLevel001(game, savedGame);
+
+                game.setScreen(inGameScreen);}
+//                if(save.getLevelType()==1){
+//                    easyLevel001 inGameScreen = new easyLevel001(game, savedGame);
+//
+//                    game.setScreen(inGameScreen);}
+//                if(save.getLevelType()==2){
+//                    easyLevel001 inGameScreen = new easyLevel001(game, savedGame);
+//
+//                    game.setScreen(inGameScreen);}
+
                 System.out.println("Load Game Button Clicked");
             }
+
+
         });
 
         exitBtn.addListener(new ClickListener() {

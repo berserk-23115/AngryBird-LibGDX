@@ -25,7 +25,7 @@ public class catapult {
     private World world;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Texture slingshotTexture, projectileTexture, trajectoryPointTexture;
+    private transient Texture slingshotTexture, projectileTexture, trajectoryPointTexture;
     private ProjectileEquation projectileEquation;
     private Vector2 slingshotPosition;
     private Vector2 projectilePosition;
@@ -41,9 +41,9 @@ public class catapult {
     private ArrayList<bird> avBirdClass=new ArrayList<>();
     private ArrayList<Body> chidiyas = new ArrayList<>();
     private bird projectBodyClass;
-    private Integer index=0,indexC=0;
+   // private Integer index=0,indexC=0;
     private ArrayList<ArrayList<Vector2>> thrownBirdPositions = new ArrayList<>();
-    private int bird=0;
+    private int Boolbird=0;
 
 
     public static class Controller {
@@ -51,7 +51,7 @@ public class catapult {
         public float angle = 0f;
     }
 public int getter(){
-        return bird;
+        return Boolbird;
 }
     public static class TrajectoryActor extends Actor {
         private Controller controller;
@@ -124,31 +124,9 @@ public int getter(){
         // Initialize projectileEquation
         projectileEquation = new ProjectileEquation();
         projectileEquation.gravity = -9.8f;
-        projectileBody= chidiyas.get(index);
-        projectBodyClass=avBirdClass.get(index);
+        projectileBody= chidiyas.get(avBirdClass.get(0).getIndex());
+        projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
 
-        // Define the projectile body
-
-//        projectileBodyDef.type = BodyDef.BodyType.DynamicBody; // Set directly to Dynamic
-//        projectileBodyDef.position.set((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM);
-//        projectileBodyDef.active = false; // Start inactive
-//
-//        projectileBody = world.createBody(projectileBodyDef);
-//        projectileBody.setUserData(new blue(projectileBody));
-//
-//        // Define the projectile shape
-//        CircleShape projectileShape = new CircleShape();
-//        projectileShape.setRadius(10 / PPM); // Set radius based on texture size
-//
-//        FixtureDef projectileFixtureDef = new FixtureDef();
-//        projectileFixtureDef.shape = projectileShape;
-//        projectileFixtureDef.density = 1f;
-//        projectileFixtureDef.friction = 0f;
-//        projectileFixtureDef.restitution = 0.3f;// Bounciness
-//
-//
-//        projectileBody.createFixture(projectileFixtureDef);
-//        projectileShape.dispose();
 
         // Initialize controller
         controller = new Controller();
@@ -179,7 +157,7 @@ public int getter(){
                 Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Touched Catapult");
-                    projectileBody=chidiyas.get(index);
+                    projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
                     projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
                     dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
@@ -237,7 +215,7 @@ public int getter(){
                     }
                     thrownBirdPositions.add(trajectoryPoints);
 
-                    index++;
+                    avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
                     return true;}
                 return false;
             }
@@ -249,17 +227,17 @@ public int getter(){
 
     public void render(float delta) {
         world.step(1/60f, 6, 2);
-        indexC=index;
+        avBirdClass.get(0).setIndexC(avBirdClass.get(0).getIndex());
         Vector2 bodyPosition = projectileBody.getPosition();
         projectilePosition.set(bodyPosition.x * PPM, bodyPosition.y * PPM);
-        if(index==5){index=3;bird=1;indexC=3;}
-        if(index==4){indexC=3;}
+        if(avBirdClass.get(0).getIndex()==5){avBirdClass.get(0).setIndex(3);Boolbird=1;avBirdClass.get(0).setIndexC(3);}
+        if(avBirdClass.get(0).getIndex()==4){avBirdClass.get(0).setIndexC(3);}
 
 
 
         batch.begin();
 
-        projectBodyClass=avBirdClass.get(indexC);
+        projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
         batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
       //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
@@ -271,7 +249,7 @@ public int getter(){
 
 
             // Loop through the list safely
-            for (int i = indexC + 1; i < avBirdClass.size(); i++) {
+            for (int i = avBirdClass.get(0).getIndexC() + 1; i < avBirdClass.size(); i++) {
                 bird cur = avBirdClass.get(i); // Safe access
 
                 // Calculate positions
