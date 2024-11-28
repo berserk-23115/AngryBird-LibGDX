@@ -247,12 +247,11 @@ public int getter(){
             avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);
             projectileBody=chidiyas.get(avBirdClass.get(0).getIndex());
             projectileBody.setTransform((slingshotPosition.x+15)/PPM, (slingshotPosition.y+55)/ PPM,0);
-            projectileBody.setActive(false);
+
             released=false;
         }
         if(avBirdClass.get(0).getIndex()==4){Boolbird=1;}
-      //  System.out.println("x:-"+(projectilePosition.x-10)+" y:-"+(projectilePosition.y-10));
-        // Assuming avBirdClass is an ArrayList or similar collection of birds
+       // chidiyas.get(avBirdClass.get(0).getIndex()-1).setActive(false);
         float startX = 50/PPM; // Starting X position
         float startY = 100/PPM; // Starting Y position
         float gap = 30/PPM;    // Gap between birds (adjust as needed)
