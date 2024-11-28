@@ -46,7 +46,7 @@ import java.util.Random;
 import java.io.Serializable;
 
 public class easyLevel001 implements Screen {
-    private angryBirds game;
+    private transient angryBirds game;
     private static final long serialVersionUID = 1L;
 
     private transient OrthographicCamera gameCam;
@@ -80,8 +80,8 @@ public class easyLevel001 implements Screen {
     private transient Texture woodBlockTexture,pigBlockTexture;
     private transient Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
 
-    private int mapWidth;
-    private int mapHeight;
+    private transient int mapWidth;
+    private transient int mapHeight;
 
     private transient catapult slingshotGame;
     private saveGame save;
@@ -1147,15 +1147,11 @@ deadBlocks.clear();
         batch.draw(backBtnTexture,10 / PPM, 550 / PPM,48/PPM,48/PPM);
         batch.draw(saveBtnTexture,70 / PPM, 550 / PPM,105/PPM,48/PPM);
         batch.draw(reloadBtnTexture,185 / PPM, 550 / PPM,48/PPM,48/PPM);
-//        for (Body body : blockBodies) {
-//            batch.draw(woodBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
-//        }
+
         for(pigs p : pigBodies1){
             batch.draw(p.getpigTexture(), p.getBody().getPosition().x-30/ PPM, p.getBody().getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
         }
-//        for(Body body : pigBodies){
-//            batch.draw(pigBlockTexture, body.getPosition().x-30/ PPM, body.getPosition().y-30/ PPM, 60 / PPM, 60 / PPM);
-//        }
+
 
         batch.end();
         stage.act(delta);

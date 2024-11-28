@@ -8,14 +8,16 @@ import java.io.Serializable;
 public class pigs implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private transient Texture pigTexture;
+    private transient Texture texture;
     private Integer Health;
-    private Body body;
+    private transient Body body;
+    private String type;
     // public static ArrayList<Body> blockbodies1;
-    public pigs(String pigTexture, Integer Health, Body body){
-        this.pigTexture = new Texture(pigTexture);
+    public pigs(String pigTexture, Integer Health, Body body,String type){
+        this.texture = new Texture(pigTexture);
         this.Health = Health;
         this.body = body;
+        this.type = type;
 
     }
 
@@ -29,12 +31,33 @@ public class pigs implements Serializable {
         return body;
     }
     public Texture getpigTexture(){
-        return pigTexture;
+        return texture;
     }
     public Body getBody() {
         return body;
     }
     public void dispose(){
-        pigTexture.dispose();
+        texture.dispose();
+    }
+    public void relodBodyPosition(float x, float y){
+        body.setTransform(x,y,0);
+    }
+    public void reloadTexture() {
+        if (texture == null) {
+            switch (type.toLowerCase()) {
+                case "kingpig":
+                    texture = new Texture("pigs/kingpig.png");
+                    break;
+                case "mediumgpig":
+                    texture = new Texture("pigs/mediumgpig.png");
+                    break;
+                case "smallpig":
+                    texture = new Texture("pigs/smallpig.png");
+                    break;
+                default:
+                    texture = new Texture("pigs/defaultpig.png");
+                    break;
+            }
+        }
     }
 }

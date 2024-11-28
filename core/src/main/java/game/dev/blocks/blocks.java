@@ -56,4 +56,7 @@ public class blocks implements Serializable {
             }
         }
     }
+    public void relodBodyPosition(float x, float y){
+        body.setTransform(x,y,0);
+    }
 }
