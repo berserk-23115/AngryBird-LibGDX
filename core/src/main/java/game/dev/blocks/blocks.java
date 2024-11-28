@@ -6,12 +6,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class blocks implements Serializable {
+public class blocks{
     private static final long serialVersionUID = 1L;
 
-    private transient Texture blockTexture;
+    private Texture blockTexture;
     private Integer Health;
-    private transient Body body;
+    private Body body;
     private String type;
     // public static ArrayList<Body> blockbodies1;
     public blocks(String blockTexture, Integer Health, Body body,String type){
@@ -55,6 +55,9 @@ public class blocks implements Serializable {
                     break;
             }
         }
+    }
+    public String getType(){
+        return type;
     }
     public void relodBodyPosition(float x, float y){
         body.setTransform(x,y,0);

@@ -241,7 +241,7 @@ public int getter(){
 
         projectBodyClass=avBirdClass.get(avBirdClass.get(0).getIndexC());
         batch.draw(slingshotTexture, slingshotPosition.x, slingshotPosition.y, 40, 100);
-        batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 20, 20);
+        batch.draw(projectBodyClass.getBirdTexture(), projectilePosition.x-10 , projectilePosition.y -10, 30, 30);
         long currentTime=System.currentTimeMillis();
         if(released && currentTime-releasedTime>3000){
             avBirdClass.get(0).setIndex(avBirdClass.get(0).getIndex()+1);

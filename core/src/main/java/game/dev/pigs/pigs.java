@@ -5,12 +5,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 import java.io.Serializable;
 
-public class pigs implements Serializable {
+public class pigs {
     private static final long serialVersionUID = 1L;
 
-    private transient Texture texture;
+    private Texture texture;
     private Integer Health;
-    private transient Body body;
+    private Body body;
     private String type;
     // public static ArrayList<Body> blockbodies1;
     public pigs(String pigTexture, Integer Health, Body body,String type){
@@ -41,6 +41,9 @@ public class pigs implements Serializable {
     }
     public void relodBodyPosition(float x, float y){
         body.setTransform(x,y,0);
+    }
+    public String getType(){
+        return type;
     }
     public void reloadTexture() {
         if (texture == null) {

@@ -12,6 +12,7 @@ dependencies {
   api "com.github.tommyettinger:colorful:$colorfulVersion"
   api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$controllerMappingVersion"
   api "org.apache.fury:fury-core:$furyVersion"
+  implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
 
 
 

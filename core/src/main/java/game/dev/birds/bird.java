@@ -5,12 +5,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import java.io.Serializable;
 
-public class bird implements Serializable {
+public class bird {
     private static final long serialVersionUID = 1L;
 
-    private transient Texture birdTexture;
+    private Texture birdTexture;
     private Integer power;
-    private transient Body body;
+    private Body body;
     int index=0,indexC=0;
     private String type;
     public bird(String blockTexture, Integer Health, Body body, String type) {
@@ -65,5 +65,8 @@ public class bird implements Serializable {
     }
     public void relodBodyPosition(float x, float y){
         body.setTransform(x,y,0);
+    }
+    public String getType(){
+        return type;
     }
 }
