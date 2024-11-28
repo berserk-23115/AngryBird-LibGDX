@@ -46,7 +46,7 @@ import java.util.Random;
 import java.io.Serializable;
 
 public class easyLevel001 implements Screen {
-    private angryBirds game;
+    private transient angryBirds game;
     private static final long serialVersionUID = 1L;
 
     private transient OrthographicCamera gameCam;
@@ -80,8 +80,8 @@ public class easyLevel001 implements Screen {
     private transient Texture woodBlockTexture,pigBlockTexture;
     private transient Texture backBtnTexture,saveBtnTexture,reloadBtnTexture;
 
-    private int mapWidth;
-    private int mapHeight;
+    private transient int mapWidth;
+    private transient int mapHeight;
 
     private transient catapult slingshotGame;
     private saveGame save;
