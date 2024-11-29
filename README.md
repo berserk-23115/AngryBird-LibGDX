@@ -156,7 +156,11 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with name: prefix, where the name should be replaced with the ID of a specific project.
 For example, core:clean removes build folder only from the core project.
+## Github Repository
 
+```bash
+https://github.com/berserk-23115/AngryBird-LibGDX.git
+```
 ## Authors
  Anushk Kumar  2023115\
  Ansh Goel     2023099
