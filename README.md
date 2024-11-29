@@ -38,3 +38,79 @@ In this project, several Object-Oriented Programming (OOP) concepts are utilized
    - The project abstracts the complexity of game elements by defining clear interfaces and classes. For example, the Screen interface abstracts the behavior of different game screens.
 
 
+
+
+#### Technologies Used
+- *Programming Language:* Java
+- *Game Library:* LibGDX
+- *Build Tool:* Gradle
+- *Java Version:* 23
+- *IDE Support:* IntelliJ IDEA, Eclipse
+
+#### Project Structure
+- *Core Module:* Contains the main game logic, including game screens, and game objects.
+- *Assets Module:* Includes all the game assets such as images, sounds, and fonts.
+- *Desktop Module:* Contains the launcher for the desktop version of the game.
+
+#### Key Components
+- *Game Screens:* Different screens like the main menu, game screen, and settings screen.
+- *Game Objects:* Birds, pigs, and structures with their respective behaviors and interactions.
+- *User Interface:* Includes buttons, score displays, and other UI elements.
+- *Assets:* Images for birds, pigs, and backgrounds; sounds for effects and background music; fonts for text rendering.
+
+#### Features
+- *Multiple Levels :* Various levels with increasing difficulty.
+- *Sound Effects :* Includes sound effects for bird launches, collisions, and background music.
+- *Random Level Generation :* Generates every level of distinguished difficulties , with new combination of birds and block & pig placement
+
+## How to Run?
+### Pre-requisites
+JAVA-17 OPENJDK
+bash
+sudo apt install java17-openjdk
+
+INTELLIJ / ECLIPSE IDE
+
+bash
+https://www.jetbrains.com/idea/
+https://eclipseide.org/
+
+### Steps to run the Game
+bash
+git clone https://github.com/AnshG12/angry_birds.git
+cd AngryBird-LibGDX/lwjgl3/src/main/java/game/dev/lwjgl3
+java lwjgl3Launcher.java
+
+
+
+## Platforms
+
+- core: Main module with the application logic shared by all platforms.
+- lwjgl3: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+
+## Gradle
+
+This project uses [Gradle](https://gradle.org/) to manage dependencies.
+The Gradle wrapper was included, so you can run Gradle tasks using gradlew.bat or ./gradlew commands.
+Useful Gradle tasks and flags:
+
+- --continue: when using this flag, errors will not stop the tasks from running.
+- --daemon: thanks to this flag, Gradle daemon will be used to run chosen tasks.
+- --offline: when using this flag, cached dependency archives will be used.
+- --refresh-dependencies: this flag forces validation of all dependencies. Useful for snapshot versions.
+- build: builds sources and archives of every project.
+- cleanEclipse: removes Eclipse project data.
+- cleanIdea: removes IntelliJ project data.
+- clean: removes build folders, which store compiled classes and built archives.
+- eclipse: generates Eclipse project data.
+- idea: generates IntelliJ project data.
+- lwjgl3:jar: builds application's runnable jar, which can be found at lwjgl3/build/libs.
+- lwjgl3:run: starts the application.
+- test: runs unit tests (if any).
+
+Note that most tasks that are not specific to a single project can be run with name: prefix, where the name should be replaced with the ID of a specific project.
+For example, core:clean removes build folder only from the core project.
+
+## Authors
+ Anushk Kumar  2023115\
+ Ansh Goel     2023099
