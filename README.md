@@ -1,33 +1,40 @@
-# angrybirds
+# AngryBirds-LibGDX
+## Introduction
+This project is developed for an evaluation component of our Advanced Programming (CSE 201) Course\
+The project aims to develop a Simple 2D Game replica of the renowned Title of Angry Birds by Rovio Entertainment\
+using a gradle-based Game Library LibGDX.It will help us to understand the basics of Game Development and the
+significance of the OOPS programming paradigm in Real-World Applications. This project runs on JAVA-17 version.
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+This project was generated with a template including simple application launchers and an ApplicationAdapter extension that draws libGDX logo.
 
-## Platforms
+### Status 
+The project is completed by the deadline for the Functioning Game. We have created All the necessary UI components for the game using LibGDX's Image Button Library
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+## Explanation & Summary of the Project
 
-## Gradle
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+### Summary
+This project is a Java-based game developed using the LibGDX framework. It features an Angry Birds-style gameplay where players interact with various game elements such as birds, blocks, and pigs. The project employs Object-Oriented Programming (OOP) concepts including classes, objects, inheritance, encapsulation, polymorphism, and abstraction. Key classes include LevelSelector, angryBirds, easyLevel001, medLevel001, hardLevel001, blocks, pigs, and bird. The Screen interface is implemented by different screen classes to manage game screens polymorphically. The angryBirds class initializes the game and sets the initial screen. The LevelSelector class handles the level selection screen, including UI elements and their interactions. The project also includes unit tests to verify the functionality of game components.
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+In this project, several Object-Oriented Programming (OOP) concepts are utilized. Here are the key OOP concepts and their applications:
+
+1. *Classes and Objects*:
+   - *Classes*: The project defines several classes such as LevelSelector, angryBirds, easyLevel001, medLevel001, hardLevel001, blocks, pigs, and bird.
+   - *Objects*: Instances of these classes are created and used to represent various entities in the game, such as levels, birds, blocks, and pigs.
+
+2. *Inheritance*:
+   - The LevelSelector class implements the Screen interface, which is a form of inheritance. This allows LevelSelector to be used polymorphically as a Screen.
+
+3. *Encapsulation*:
+   - The project encapsulates data within classes. For example, the blocks, pigs, and bird classes encapsulate their properties like health and power, providing public methods to access and modify these properties.
+
+4. *Polymorphism*:
+   - Polymorphism is used through the implementation of the Screen interface. Different screen classes (e.g., LevelSelector, easyLevel001, medLevel001, hardLevel001) can be used interchangeably as Screen objects.
+
+5. *Abstraction*:
+   - The project abstracts the complexity of game elements by defining clear interfaces and classes. For example, the Screen interface abstracts the behavior of different game screens.
+
+
