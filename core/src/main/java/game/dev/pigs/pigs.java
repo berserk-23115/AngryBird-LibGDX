@@ -12,6 +12,7 @@ public class pigs {
     private Integer Health;
     private Body body;
     private String type;
+    private float rectX,rectY;
     // public static ArrayList<Body> blockbodies1;
     public pigs(String pigTexture, Integer Health, Body body,String type){
         this.texture = new Texture(pigTexture);
@@ -62,5 +63,17 @@ public class pigs {
                     break;
             }
         }
+    }
+    public void setRectX(float x){
+        rectX=x;
+    }
+    public void setRectY(float y){
+        rectY=y;
+    }
+    public float getRectX(){
+        return rectX;
+    }
+    public float getRectY(){
+        return rectY;
     }
 }

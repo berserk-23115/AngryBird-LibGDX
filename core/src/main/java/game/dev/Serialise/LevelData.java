@@ -5,6 +5,8 @@ import game.dev.blocks.blocks;
 import game.dev.pigs.pigs;
 import game.dev.birds.bird;
 
+import static game.dev.level.easyLevel001.PPM;
+
 public class LevelData {
     @SerializedName("blocks")
     private List<Block> blocks;
@@ -55,7 +57,7 @@ public class LevelData {
         private String type;
         private float x;
         private float y;
-        private float width=60,height=60;
+        private float width=60,height=60,rectX,rectY;
         private int health;
 
 
@@ -64,6 +66,8 @@ public class LevelData {
             this.x=block.getBody().getPosition().x;
             this.y=block.getBody().getPosition().y;
             this.health=block.getHealth();
+            this.rectX=block.getRectX();
+            this.rectY=block.getRectY();
         }
 
         public float getX() {
@@ -86,6 +90,12 @@ public class LevelData {
         }
         public float getHeight() {
             return height;
+        }
+        public float getRectX() {
+            return rectX/2/PPM;
+        }
+        public float getRectY() {
+            return rectY / 2 / PPM;
         }
         // Constructor, getters, and setters
     }
@@ -95,12 +105,14 @@ public class LevelData {
         private float y;
         private int health;
         private String type;
-        private float width=60,height=60;
+        private float width=60,height=60,rectX,rectY;
         public Pig(pigs pig){
             this.type=pig.getType();
             this.x=pig.getBody().getPosition().x;
             this.y=pig.getBody().getPosition().y;
             this.health=pig.getHealth();
+            this.rectX=pig.getRectX();
+            this.rectY=pig.getRectY();
         }
         public float getX() {
             return x;
@@ -123,6 +135,13 @@ public class LevelData {
         public float getHeight() {
             return height;
         }
+        public float getRectX() {
+            return rectX/2/PPM;
+        }
+        public float getRectY() {
+            return rectY / 2 / PPM;
+        }
+
         // Constructor, getters, and setters
     }
 

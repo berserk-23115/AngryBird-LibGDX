@@ -13,6 +13,7 @@ public class blocks{
     private Integer Health;
     private Body body;
     private String type;
+    private float rectX,rectY;
     // public static ArrayList<Body> blockbodies1;
     public blocks(String blockTexture, Integer Health, Body body,String type){
         this.blockTexture = new Texture(blockTexture);
@@ -61,5 +62,17 @@ public class blocks{
     }
     public void relodBodyPosition(float x, float y){
         body.setTransform(x,y,0);
+    }
+    public void setRectX(float x){
+        rectX=x;
+    }
+    public void setRectY(float y){
+        rectY=y;
+    }
+    public float getRectX(){
+        return rectX;
+    }
+    public float getRectY(){
+        return rectY;
     }
 }

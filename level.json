@@ -2,103 +2,119 @@
   "blocks": [
     {
       "type": "wood",
-      "x": 7.6738777,
-      "y": 1.2861729,
+      "x": 8.323159,
+      "y": 1.2719232,
       "width": 60.0,
       "height": 60.0,
+      "rectX": 59.0439,
+      "rectY": 60.1794,
       "health": 12
     },
     {
       "type": "wood",
-      "x": 8.323396,
-      "y": 1.2718786,
+      "x": 8.972373,
+      "y": 1.3024281,
       "width": 60.0,
       "height": 60.0,
+      "rectX": 61.3149,
+      "rectY": 65.8567,
       "health": 12
     },
     {
       "type": "wood",
-      "x": 8.977099,
-      "y": 1.3060632,
+      "x": 6.677845,
+      "y": 1.2908404,
       "width": 60.0,
       "height": 60.0,
+      "rectX": 65.8567,
+      "rectY": 63.5858,
       "health": 12
     },
     {
       "type": "wood",
-      "x": 7.4555635,
-      "y": 1.929292,
+      "x": 8.318215,
+      "y": 1.9118481,
       "width": 60.0,
       "height": 60.0,
+      "rectX": 65.8567,
+      "rectY": 64.7212,
       "health": 12
     },
     {
       "type": "wood",
-      "x": 8.327344,
-      "y": 1.9136581,
+      "x": 7.629675,
+      "y": 1.2840377,
       "width": 60.0,
       "height": 60.0,
+      "rectX": 63.5858,
+      "rectY": 62.4503,
       "health": 12
     }
   ],
   "pigs": [
     {
-      "x": 7.56075,
-      "y": 2.5782223,
+      "x": 5.92225,
+      "y": 1.2855945,
       "health": 5,
       "type": "smallpig",
       "width": 60.0,
-      "height": 60.0
+      "height": 60.0,
+      "rectX": 62.66,
+      "rectY": 62.66
     },
     {
-      "x": 8.337016,
-      "y": 2.548352,
+      "x": 8.349739,
+      "y": 2.5478697,
       "health": 5,
       "type": "smallpig",
       "width": 60.0,
-      "height": 60.0
+      "height": 60.0,
+      "rectX": 59.1298,
+      "rectY": 59.1298
     },
     {
-      "x": 9.007675,
-      "y": 1.9544717,
+      "x": 8.990539,
+      "y": 1.9518118,
       "health": 5,
       "type": "smallpig",
       "width": 60.0,
-      "height": 60.0
+      "height": 60.0,
+      "rectX": 61.7774,
+      "rectY": 60.8949
     }
   ],
   "bird": [
     {
-      "type": "chuck",
-      "x": 1.3186928,
+      "type": "red",
+      "x": 1.0920563,
       "y": 1.06098,
       "width": 30.0,
       "height": 30.0,
-      "power": 9
+      "power": 15
     },
     {
-      "type": "blue",
+      "type": "chuck",
       "x": 0.75,
       "y": 1.45,
       "width": 30.0,
       "height": 30.0,
-      "power": 8
-    },
-    {
-      "type": "chuck",
-      "x": 0.0,
-      "y": 0.0,
-      "width": 30.0,
-      "height": 30.0,
       "power": 9
     },
     {
-      "type": "blue",
+      "type": "red",
       "x": 0.0,
       "y": 0.0,
       "width": 30.0,
       "height": 30.0,
-      "power": 8
+      "power": 15
+    },
+    {
+      "type": "red",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 15
     }
   ],
   "level": 1,

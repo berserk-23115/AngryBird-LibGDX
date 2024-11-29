@@ -949,13 +949,13 @@ public class easyLevel001 implements Screen {
             if(Objects.equals(block.getType(), "wood")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((block.getX()) / PPM, (block.getY()) / PPM);
+                bdef.position.set((block.getX()), (block.getY()));
 
                 Body body = world.createBody(bdef);
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(block.getWidth() / PPM, block.getHeight() / PPM);
+                shape.setAsBox(block.getRectX(), block.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -977,7 +977,7 @@ public class easyLevel001 implements Screen {
             else if(Objects.equals(block.getType(), "glass")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((block.getX()) / PPM, (block.getY()) / PPM);
+                bdef.position.set((block.getX()), (block.getY()));
 
                 Body body = world.createBody(bdef);
 
@@ -1005,13 +1005,13 @@ public class easyLevel001 implements Screen {
             else if(Objects.equals(block.getType(), "concrete")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((block.getX()) / PPM, (block.getY()) / PPM);
+                bdef.position.set((block.getX()) , (block.getY()));
 
                 Body body = world.createBody(bdef);
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(block.getWidth() / PPM, block.getHeight() / PPM);
+                shape.setAsBox(block.getRectX(), block.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -1037,13 +1037,15 @@ public class easyLevel001 implements Screen {
             if(Objects.equals(p.getType(), "smallpig")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((p.getX()) / PPM, (p.getY()) / PPM);
+                bdef.position.set((p.getX()), (p.getY()));
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                System.out.println("X: " + (p.getX() )+ " Y: " + (p.getY()));
 
                 Body body = world.createBody(bdef);
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(p.getWidth() / PPM, p.getHeight() / PPM);
+                shape.setAsBox(p.getRectX(), p.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -1090,7 +1092,7 @@ public class easyLevel001 implements Screen {
             else if(Objects.equals(p.getType(), "kingpig")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((p.getX()) / PPM, (p.getY()) / PPM);
+                bdef.position.set(p.getX(), p.getY());
 
                 Body body = world.createBody(bdef);
 
@@ -1252,6 +1254,8 @@ public class easyLevel001 implements Screen {
         //  blockBodies.add(body);
         wood Wood=new wood(body);
         body.setUserData(Wood);
+        Wood.setRectX(rect.getWidth());
+        Wood.setRectY(rect.getHeight());
         blockBodies1.add(Wood);
 
         //wood Wood=new wood(body);
@@ -1266,7 +1270,7 @@ public class easyLevel001 implements Screen {
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("X: " + (rect.getWidth() / 2) /PPM + " Y: " + (rect.getHeight() / 2) / PPM);
+        System.out.println("X: " + (rect.getX() +rect.getWidth() / 2) /PPM + " Y: " + (rect.getY() +rect.getHeight() / 2) / PPM);
         Body body = world.createBody(bdef);
 
 
@@ -1283,6 +1287,8 @@ public class easyLevel001 implements Screen {
         smallpig king=new smallpig(body);
         body.setUserData(king);
         pigBodies1.add(king);
+        king.setRectX(rect.getWidth());
+        king.setRectY(rect.getHeight());
         //pigBodies.add(body);
         shape.dispose();
     }
