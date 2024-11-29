@@ -24,9 +24,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import game.dev.angryBirds;
@@ -39,10 +37,6 @@ import game.dev.pigs.mediumgpig;
 import game.dev.pigs.pigs;
 import game.dev.pigs.smallpig;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -240,6 +234,8 @@ public class easyLevel001 implements Screen {
 
 
         }
+
+
 
         /// DUMMY BIRD --ADDED --->>>>>>
         BodyDef birdkilulli = new BodyDef();
@@ -511,58 +507,7 @@ public class easyLevel001 implements Screen {
                         }
                     }
 
-
-
-
-
-
-
-//
-//
-//                    if (fixtureA.getBody().getUserData() instanceof kingpig) {
-//                        System.out.println("choosi");
-//                        bird currBird = (bird) fixtureB.getBody().getUserData();
-//                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
-//
-//                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
-//                        if (currPig.getHealth() <= 0) {
-//                            deadPigs.add(currPig);
-//                            bodiesToDestroy.add(fixtureA.getBody());
-//                        }
-//
-//                    } else if (fixtureB.getBody().getUserData() instanceof kingpig) {
-//                        System.out.println("choosi");
-//
-//                        bird currBird = (bird) fixtureB.getBody().getUserData();
-//                        kingpig currPig = (kingpig) fixtureA.getBody().getUserData();
-//
-//                        currPig.setHealth(currPig.getHealth() - currBird.getPower());
-//                        if (currPig.getHealth() <= 0) {
-//
-//                            if (currPig instanceof pigs) {
-//                                System.out.println("currPig is an instance of pigs.");
-//                                deadPigs.add(currPig);
-//                            } else {
-//                                System.out.println("currPig is not a valid pigs instance.");
-//                            }
-//                            deadPigs.add(currPig);
-//                            for(pigs p: deadPigs){
-//                                System.out.println("pigs entered:- "+p);
-//                            }
-//                            bodiesToDestroy.add(fixtureB.getBody());
-//                        }
-//                    }
-
-
                 }
-
-
-
-
-
-
-                //----------------------- PIG n BLOCK---------------
-
 
 
             }
