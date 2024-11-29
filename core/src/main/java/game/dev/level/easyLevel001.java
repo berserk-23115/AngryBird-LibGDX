@@ -969,6 +969,8 @@ public class easyLevel001 implements Screen {
                 Wood.setHealth(block.getHealth());
 
                 body.setUserData(Wood);
+                Wood.setRectX(block.getRectX());
+                Wood.setRectY(block.getRectY());
                 blockBodies1.add(Wood);
 
                 //wood Wood=new wood(body);
@@ -983,7 +985,7 @@ public class easyLevel001 implements Screen {
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(block.getWidth() / PPM, block.getHeight() / PPM);
+                shape.setAsBox(block.getRectX(), block.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -997,6 +999,8 @@ public class easyLevel001 implements Screen {
                 Glass.setHealth(block.getHealth());
 
                 body.setUserData(Glass);
+                Glass.setRectX(block.getRectX());
+                Glass.setRectY(block.getRectY());
                 blockBodies1.add(Glass);
 
                 //wood Wood=new wood(body);
@@ -1025,6 +1029,8 @@ public class easyLevel001 implements Screen {
                 con.setHealth(block.getHealth());
 
                 body.setUserData(con);
+                con.setRectX(block.getRectX());
+                con.setRectY(block.getRectY());
                 blockBodies1.add(con);
 
                 //wood Wood=new wood(body);
@@ -1038,8 +1044,6 @@ public class easyLevel001 implements Screen {
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
                 bdef.position.set((p.getX()), (p.getY()));
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                System.out.println("X: " + (p.getX() )+ " Y: " + (p.getY()));
 
                 Body body = world.createBody(bdef);
 
@@ -1058,6 +1062,8 @@ public class easyLevel001 implements Screen {
                 smallpig smallPig=new smallpig(body);
                 smallPig.setHealth(p.getHealth());
                 body.setUserData(smallPig);
+                smallPig.setRectX(p.getRectX());
+                smallPig.setRectY(p.getRectY());
                 pigBodies1.add(smallPig);
 
                 //wood Wood=new wood(body);
@@ -1066,13 +1072,13 @@ public class easyLevel001 implements Screen {
             else if(Objects.equals(p.getType(), "mediumgpig")){
                 BodyDef bdef = new BodyDef();
                 bdef.type = BodyDef.BodyType.DynamicBody;
-                bdef.position.set((p.getX()) / PPM, (p.getY()) / PPM);
+                bdef.position.set((p.getX()), (p.getY()));
 
                 Body body = world.createBody(bdef);
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(p.getWidth() / PPM, p.getHeight() / PPM);
+                shape.setAsBox(p.getRectX(), p.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -1085,6 +1091,8 @@ public class easyLevel001 implements Screen {
                 mediumgpig smallPig=new mediumgpig(body);
                 smallPig.setHealth(p.getHealth());
                 body.setUserData(smallPig);
+                smallPig.setRectX(p.getRectX());
+                smallPig.setRectY(p.getRectY());
                 pigBodies1.add(smallPig);
 
                 shape.dispose();
@@ -1098,7 +1106,7 @@ public class easyLevel001 implements Screen {
 
 
                 PolygonShape shape = new PolygonShape();
-                shape.setAsBox(p.getWidth() / PPM, p.getHeight() / PPM);
+                shape.setAsBox(p.getRectX(), p.getRectY());
 
                 FixtureDef fdef = new FixtureDef();
                 fdef.shape = shape;
@@ -1111,6 +1119,8 @@ public class easyLevel001 implements Screen {
                 kingpig smallPig=new kingpig(body);
                 smallPig.setHealth(p.getHealth());
                 body.setUserData(smallPig);
+                smallPig.setRectX(p.getRectX());
+                smallPig.setRectY(p.getRectY());
                 pigBodies1.add(smallPig);
 
                 //wood Wood=new wood(body);

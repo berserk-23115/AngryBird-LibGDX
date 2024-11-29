@@ -134,12 +134,12 @@ public class MainScreen implements Screen {
                 if(loadedLevel.getLevel()==1){
                     game.setScreen(new easyLevel001(game, loadedLevel));
                 }
-//                else if (loadedLevel.getLevel()==2){ {
-//                    game.setScreen(new medLevel001(game, loadedLevel));
-//                }
-//                } else if (loadedLevel.getLevel()==3){
-//                    game.setScreen(new hardLevel001(game, loadedLevel));
-//                }
+                else if (loadedLevel.getLevel()==2){ {
+                    game.setScreen(new medLevel001(game, loadedLevel));
+                }
+                } else if (loadedLevel.getLevel()==3){
+                    game.setScreen(new hardLevel001(game, loadedLevel));
+                }
 
 
                 System.out.println("Load Game Button Clicked");
