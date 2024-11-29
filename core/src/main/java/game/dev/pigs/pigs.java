@@ -21,10 +21,14 @@ public class pigs {
         this.type = type;
 
     }
+    public pigs(Integer Health){
+        this.Health = Health;
+    }
 
     public Integer getHealth() {
         return Health;
     }
+
     public void setHealth(Integer health) {
         Health = health;
     }

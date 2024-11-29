@@ -19,6 +19,9 @@ public class bird {
         this.body=body;
         this.type =type;
     }
+    public bird(Integer Health){
+        this.power = Health;
+    }
     public Texture getBirdTexture() {
         return birdTexture;
     }

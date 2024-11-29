@@ -22,6 +22,9 @@ public class blocks{
         this.type = type;
 
     }
+    public blocks(Integer Health){
+        this.Health = Health;
+    }
     public Texture getBlockTexture(){
         return blockTexture;
     }
