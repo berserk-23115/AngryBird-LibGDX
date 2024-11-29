@@ -44,7 +44,7 @@ public class catapult {
    private int Boolbird=0;
     boolean released=false;
     private long releasedTime=0;
-    private boolean showTrajectory = false;
+    private static boolean showTrajectory = false;
 
 
     public static class Controller {
@@ -78,6 +78,7 @@ public int getter(){
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
+            if (!showTrajectory) return;
             float t = 0f;
 
             for (int i = 0; i < trajectoryPointCount; i++) {
@@ -161,6 +162,7 @@ public int getter(){
                     System.out.println("Touched Catapult");
                 dragStart.set(screenX, Gdx.graphics.getHeight() - screenY);
                     isDragging = true;
+                    showTrajectory = true;
                     return true;
                 }
                 return false;
@@ -193,6 +195,7 @@ public int getter(){
                 if(InputArea.contains(pos.x, pos.y)) {
                     System.out.println("Input area touch released!");
                     isDragging = false;
+                    showTrajectory = false;
 
                     projectileEquation.startVelocity.set(controller.power, 0f);
                     projectileEquation.startVelocity.setAngleDeg(controller.angle);
@@ -250,7 +253,8 @@ public int getter(){
             released=false;
         }
         if(avBirdClass.get(0).getIndex()==4){Boolbird=1;}
-       // chidiyas.get(avBirdClass.get(0).getIndex()-1).setActive(false);
+        if(avBirdClass.get(0).getIndex()>1){
+       chidiyas.get(avBirdClass.get(0).getIndex()-1).setActive(false);}
         float startX = 50/PPM; // Starting X position
         float startY = 100/PPM; // Starting Y position
         float gap = 30/PPM;    // Gap between birds (adjust as needed)
@@ -275,9 +279,7 @@ public int getter(){
 
         stage.act(delta);
         stage.draw();
-//        if (projectilePosition.y < 0) {
-////            resetProjectile(); // Call to reset
-//        }
+
 
     }
 

@@ -42,13 +42,13 @@ public class MainScreen implements Screen {
         this.game = game;
 
         // Load textures
-        logo = new Texture("MainScreen/AngryBird.png");
-        backgroundImg = new Texture("MainScreen/backdrop.jpeg");
-        exitButton = new Texture("MainScreen/exitbtn.png");
-        musicOnButton = new Texture("MainScreen/music_on.png");
-        musicOffButton = new Texture("MainScreen/music_off.png");
-        newGameButton = new Texture("MainScreen/menuB1.png");
-        loadGameButton = new Texture("MainScreen/menuB2.png");
+//        logo = new Texture("MainScreen/AngryBird.png");
+//        backgroundImg = new Texture("MainScreen/backdrop.jpeg");
+//        exitButton = new Texture("MainScreen/exitbtn.png");
+//        musicOnButton = new Texture("MainScreen/music_on.png");
+//        musicOffButton = new Texture("MainScreen/music_off.png");
+//        newGameButton = new Texture("MainScreen/menuB1.png");
+//        loadGameButton = new Texture("MainScreen/menuB2.png");
 
         // Load music
         click = Gdx.audio.newMusic(Gdx.files.internal("music/click.ogg"));
@@ -65,22 +65,69 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
+        logo = new Texture("MainScreen/AngryBird.png");
+        backgroundImg = new Texture("MainScreen/backdrop.jpeg");
+        exitButton = new Texture("MainScreen/exitbtn.png");
+        musicOnButton = new Texture("MainScreen/music_on.png");
+        musicOffButton = new Texture("MainScreen/music_off.png");
+        newGameButton = new Texture("MainScreen/menuB1.png");
+        loadGameButton = new Texture("MainScreen/menuB2.png");
+
+
+
+
         // Create a skin and add button textures
         Skin skin = new Skin();
-        skin.add("newGame", new TextureRegion(newGameButton));
-        skin.add("loadGame", new TextureRegion(loadGameButton));
-        skin.add("exit", new TextureRegion(exitButton));
-        skin.add("Logo", new TextureRegion(logo));
-        skin.add("musicOn", new TextureRegion(musicOnButton));
+        skin.add("newGame", newGameButton);
+        skin.add("loadGame", loadGameButton);
+        skin.add("exit", exitButton);
+        skin.add("Logo", logo);
+        skin.add("musicOn", musicOnButton);
+        skin.add("musicOff", musicOffButton);
+
+        ImageButton.ImageButtonStyle newGameStyle = new ImageButton.ImageButtonStyle();
+        newGameStyle.up = skin.getDrawable("newGame");
+
+        ImageButton.ImageButtonStyle loadGameStyle = new ImageButton.ImageButtonStyle();
+        loadGameStyle.up = skin.getDrawable("loadGame");
+
+        ImageButton.ImageButtonStyle exitStyle = new ImageButton.ImageButtonStyle();
+        exitStyle.up = skin.getDrawable("exit");
+
+        ImageButton.ImageButtonStyle logoStyle = new ImageButton.ImageButtonStyle();
+        logoStyle.up = skin.getDrawable("Logo");
+
+        ImageButton.ImageButtonStyle musicOnStyle = new ImageButton.ImageButtonStyle();
+        musicOnStyle.up = skin.getDrawable("musicOn");
+
+        ImageButton.ImageButtonStyle musicOffStyle = new ImageButton.ImageButtonStyle();
+        musicOffStyle.up = skin.getDrawable("musicOff");
+
+
 
         // Create ImageButtons
-        ImageButton newGameBtn = new ImageButton(skin.getDrawable("newGame"));
-        ImageButton loadGameBtn = new ImageButton(skin.getDrawable("loadGame"));
-        ImageButton exitBtn = new ImageButton(skin.getDrawable("exit"));
-        ImageButton logoBtn    = new ImageButton(skin.getDrawable("Logo"));
-        ImageButton musicOnBtn = new ImageButton(skin.getDrawable("musicOn"));
+        ImageButton newGameBtn = new ImageButton(newGameStyle);
+        ImageButton loadGameBtn = new ImageButton(loadGameStyle);
+        ImageButton exitBtn = new ImageButton(exitStyle);
+        ImageButton logoBtn    = new ImageButton(logoStyle);
+        ImageButton musicOnBtn = new ImageButton(musicOnStyle);
+        ImageButton musicOffBtn = new ImageButton(musicOffStyle);
+
+
+
 
         // Set button positions
+
+
+
+
+
+
+
+
+
+
+
         logoBtn.setPosition(275,500);
 
 
@@ -200,7 +247,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-        // Dispose resources
+
         backgroundImg.dispose();
         stage.dispose();
         click.dispose();
