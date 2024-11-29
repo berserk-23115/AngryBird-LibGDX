@@ -12,6 +12,9 @@ This project was generated with a template including simple application launcher
 ### Status 
 The project is completed by the deadline for the Functioning Game. We have created All the necessary UI components for the game using LibGDX's Image Button Library
 
+## Game Screens Preview
+![My Image]("Group24.png")
+
 ## Explanation & Summary of the Project
 
 
