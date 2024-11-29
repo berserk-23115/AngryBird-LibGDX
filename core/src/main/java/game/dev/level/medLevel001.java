@@ -917,7 +917,7 @@ public class medLevel001 implements Screen {
 
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("TileMaps/level-updated.tmx");
+        map = mapLoader.load("TileMaps/mediumLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 
         // Map dimensions
