@@ -1253,12 +1253,37 @@ public class medLevel001 implements Screen {
         fdef.restitution = 0.2f;
 
         body.createFixture(fdef);
+//        concrete Wood=new concrete(body);
+//        body.setUserData(Wood);
+//        Wood.setRectX(rect.getWidth());
+//        Wood.setRectY(rect.getHeight());
+//        blockBodies1.add(Wood);
         //  blockBodies.add(body);
-        wood Wood=new wood(body);
-        body.setUserData(Wood);
-        Wood.setRectX(rect.getWidth());
-        Wood.setRectY(rect.getHeight());
-        blockBodies1.add(Wood);
+        Random random = new Random();
+        int blockType = random.nextInt(3);
+        switch (blockType) {
+            case 0:
+                wood Wood = new wood(body);
+                body.setUserData(Wood);
+                Wood.setRectX(rect.getWidth());
+                Wood.setRectY(rect.getHeight());
+                blockBodies1.add(Wood);
+                break;
+            case 1:
+                glass Glass = new glass(body);
+                body.setUserData(Glass);
+                Glass.setRectX(rect.getWidth());
+                Glass.setRectY(rect.getHeight());
+                blockBodies1.add(Glass);
+                break;
+            case 2:
+                concrete Concrete = new concrete(body);
+                body.setUserData(Concrete);
+                Concrete.setRectX(rect.getWidth());
+                Concrete.setRectY(rect.getHeight());
+                blockBodies1.add(Concrete);
+                break;
+        }
 
         //wood Wood=new wood(body);
         shape.dispose();
@@ -1285,13 +1310,33 @@ public class medLevel001 implements Screen {
         fdef.friction = 0.2f;
         fdef.restitution = 0.2f;
 
+        Random random = new Random();
+        int pigType = random.nextInt(3);
         body.createFixture(fdef);
-        smallpig king=new smallpig(body);
-        body.setUserData(king);
-        pigBodies1.add(king);
-        king.setRectX(rect.getWidth());
-        king.setRectY(rect.getHeight());
-        //pigBodies.add(body);
+        switch (pigType) {
+            case 0:
+                kingpig king = new kingpig(body);
+                body.setUserData(king);
+                pigBodies1.add(king);
+                king.setRectX(rect.getWidth());
+                king.setRectY(rect.getHeight());
+                break;
+            case 1:
+                smallpig small = new smallpig(body);
+                body.setUserData(small);
+                pigBodies1.add(small);
+                small.setRectX(rect.getWidth());
+                small.setRectY(rect.getHeight());
+                break;
+            case 2:
+                mediumgpig medium = new mediumgpig(body);
+                body.setUserData(medium);
+                pigBodies1.add(medium);
+                medium.setRectX(rect.getWidth());
+                medium.setRectY(rect.getHeight());
+                break;
+        }
+//        pigBodies.add(body);
         shape.dispose();
     }
 

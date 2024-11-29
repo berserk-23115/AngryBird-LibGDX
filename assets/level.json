@@ -31,14 +31,14 @@
       "health": 12
     },
     {
-      "type": "wood",
+      "type": "concrete",
       "x": 7.6704497,
       "y": 2.5750077,
       "width": 60.0,
       "height": 60.0,
       "rectX": 65.8567,
       "rectY": 63.5858,
-      "health": 12
+      "health": 24
     },
     {
       "type": "wood",
@@ -51,22 +51,22 @@
       "health": 12
     },
     {
-      "type": "wood",
+      "type": "glass",
       "x": 7.6588144,
       "y": 1.9200846,
       "width": 60.0,
       "height": 60.0,
       "rectX": 63.5858,
       "rectY": 62.4503,
-      "health": 12
+      "health": 8
     }
   ],
   "pigs": [
     {
       "x": 7.672042,
       "y": 3.220791,
-      "health": 5,
-      "type": "smallpig",
+      "health": 12,
+      "type": "mediumgpig",
       "width": 60.0,
       "height": 60.0,
       "rectX": 62.66,
@@ -85,8 +85,8 @@
     {
       "x": 8.98662,
       "y": 1.949114,
-      "health": 5,
-      "type": "smallpig",
+      "health": 24,
+      "type": "kingpig",
       "width": 60.0,
       "height": 60.0,
       "rectX": 61.7774,
@@ -95,20 +95,20 @@
   ],
   "bird": [
     {
-      "type": "chuck",
+      "type": "red",
       "x": 0.75,
       "y": 1.45,
       "width": 30.0,
       "height": 30.0,
-      "power": 9
+      "power": 15
     },
     {
-      "type": "red",
+      "type": "blue",
       "x": 0.0,
       "y": 0.0,
       "width": 30.0,
       "height": 30.0,
-      "power": 15
+      "power": 8
     },
     {
       "type": "chuck",

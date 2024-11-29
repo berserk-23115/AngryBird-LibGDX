@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.dev.angryBirds;
+import game.dev.level.hardLevel001;
 import game.dev.level.medLevel001;
 
 import static com.sun.java.swing.ui.CommonUI.createButton;
@@ -51,7 +52,7 @@ public class winScreenHard  implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 clickSound.play();
-                game.setScreen(new medLevel001(game));
+                game.setScreen(new hardLevel001(game));
                 // Add reset functionality here
             }
         });

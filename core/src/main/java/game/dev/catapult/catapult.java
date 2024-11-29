@@ -44,6 +44,7 @@ public class catapult {
    private int Boolbird=0;
     boolean released=false;
     private long releasedTime=0;
+    private boolean showTrajectory = false;
 
 
     public static class Controller {

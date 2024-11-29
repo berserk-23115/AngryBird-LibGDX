@@ -45,21 +45,6 @@ public class blocks{
         blockTexture.dispose();
     }
 
-    public void reloadTexture() {
-        if (blockTexture == null) {
-            switch (type.toLowerCase()) {
-                case "wood":
-                    blockTexture = new Texture("blocks/wood.png");
-                    break;
-                case "glass":
-                    blockTexture = new Texture("blocks/glass.png");
-                    break;
-                case "concrete":
-                    blockTexture = new Texture("blocks/concrete.png");
-                    break;
-            }
-        }
-    }
     public String getType(){
         return type;
     }
