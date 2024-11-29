@@ -15,10 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import game.dev.Screens.LevelSelector;
-import game.dev.Screens.MainScreen;
-import game.dev.Screens.loseScreen;
-import game.dev.Screens.winScreen;
+import game.dev.Screens.*;
 import game.dev.Serialise.LevelData;
 import game.dev.Serialise.LevelSerializer;
 import game.dev.angryBirds;
@@ -181,7 +178,7 @@ public class medLevel001 implements Screen {
                 if (inputArea.contains(back_pos.x, back_pos.y)) {
                     System.out.println("Button Clicked");
                     click.play(); // Play the click sound
-                    game.setScreen(new game.dev.level.easyLevel001(game)); // Switch to the main screen
+                    game.setScreen(new game.dev.level.medLevel001(game)); // Switch to the main screen
                     return true; // Event handled
                 }
                 return false; // Event not handled
@@ -597,7 +594,7 @@ public class medLevel001 implements Screen {
 
 
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load("TileMaps/level-updated.tmx");
+        map = mapLoader.load("TileMaps/mediumLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
 
         // Map dimensions
@@ -1338,10 +1335,10 @@ public class medLevel001 implements Screen {
 
         if (pigBodies1.size() == 0 ) {
             // Set to the Win Screen
-            game.setScreen(new winScreen(game));
+            game.setScreen(new winScreenMedium(game));
         } else if (pigBodies1.size() > 0 && slingshotGame.getter()==1) {
             // Set to the Lose Screen
-            game.setScreen(new loseScreen(game));
+            game.setScreen(new loseScreenMedium(game));
         }
 
         tiledMapRenderer.render();

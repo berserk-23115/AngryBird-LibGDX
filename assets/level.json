@@ -1,0 +1,132 @@
+{
+  "blocks": [
+    {
+      "type": "wood",
+      "x": 7.681183,
+      "y": 1.2816255,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 62.4503,
+      "rectY": 62.4503,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.323236,
+      "y": 1.2718687,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 59.0439,
+      "rectY": 60.1794,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.970367,
+      "y": 1.3001258,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 61.3149,
+      "rectY": 65.8567,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 7.6704497,
+      "y": 2.5750077,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 65.8567,
+      "rectY": 63.5858,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 8.326572,
+      "y": 1.9198623,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 65.8567,
+      "rectY": 64.7212,
+      "health": 12
+    },
+    {
+      "type": "wood",
+      "x": 7.6588144,
+      "y": 1.9200846,
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 63.5858,
+      "rectY": 62.4503,
+      "health": 12
+    }
+  ],
+  "pigs": [
+    {
+      "x": 7.672042,
+      "y": 3.220791,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 62.66,
+      "rectY": 62.66
+    },
+    {
+      "x": 8.339575,
+      "y": 2.5533185,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 59.1298,
+      "rectY": 59.1298
+    },
+    {
+      "x": 8.98662,
+      "y": 1.949114,
+      "health": 5,
+      "type": "smallpig",
+      "width": 60.0,
+      "height": 60.0,
+      "rectX": 61.7774,
+      "rectY": 60.8949
+    }
+  ],
+  "bird": [
+    {
+      "type": "chuck",
+      "x": 0.75,
+      "y": 1.45,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 9
+    },
+    {
+      "type": "red",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 15
+    },
+    {
+      "type": "chuck",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 9
+    },
+    {
+      "type": "chuck",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 30.0,
+      "height": 30.0,
+      "power": 9
+    }
+  ],
+  "level": 1,
+  "index": 0
+}
